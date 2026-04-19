@@ -39,7 +39,7 @@ const T = {
   ta: {dir:"ltr",cta_lang:"தமிழ்",badge:"🌍 டிஜிட்டல் டைம் கேப்சூல் · ஜனவரி 1, 2036 அன்று திறக்கப்படும்",hero1:"ஒரு செய்தி.",hero2:"ஒரு டாலர்.",hero3:"என்றென்றும்.",sub:"உலகிற்கு உங்கள் செய்தியை எழுதுங்கள். இது ஜனவரி 1, 2036 வரை முத்திரையிடப்படும் — பின்னர் அனைவருக்கும், எல்லா இடங்களிலும், என்றென்றும் வெளிப்படுத்தப்படும்.",counter_msgs:"செய்திகள் முத்திரையிடப்பட்டன",counter_countries:"நாடுகள்",counter_raised:"திரட்டப்பட்டது",cta:"என் செய்தியை விட்டுச் செல்லுங்கள்",cta_sub:"பாதுகாப்பான கட்டணம் · 60 வினாடிகள் · வரலாற்றின் ஒரு பகுதியாக இருங்கள்",story_badge:"இது ஏன் இருக்கிறது",story_title:"காலத்தில் முத்திரையிடப்பட்ட மனிதகுலத்தின் ஒரு தோற்றம்.",story_p1:"2026 இல், நாங்கள் ஒரு எளிய கேள்வியை கேட்டோம்: நீங்கள் முழு உலகிற்கும் ஒரு விஷயம் சொல்ல முடிந்தால் — அது 10 ஆண்டுகளில் படிக்கப்படும் என்று தெரிந்தால் — நீங்கள் என்ன சொல்வீர்கள்?",story_p2:"OneMessage.world ஒரு தயாரிப்பு அல்ல. இது ஒரு நிரந்தர பதிவு. $1 செலுத்தும் ஒவ்வொரு நபரும் 2026 ஆம் ஆண்டின் மனித சிந்தனை, நம்பிக்கை மற்றும் அன்பின் வாழ்க்கை காப்பகத்தின் ஒரு பகுதியாகிறார்கள்.",story_p3:"ஜனவரி 1, 2036 அன்று கேப்சூல் திறக்கப்படும் போது, ஒவ்வொரு செய்தியும் என்றென்றும் இலவசமாக வெளியிடப்படும்.",story_quote:"\"எதிர்கால தலைமுறையினர் இந்த கேப்சூலை 1926 இல் புதைக்கப்பட்டவற்றை நாம் பார்க்கும் விதத்தில் பார்ப்பார்கள்.\"",form_title:"2036 க்கான உங்கள் செய்தியை எழுதுங்கள்",form_name:"உங்கள் பெயர் (விரும்பினால்)",form_country:"உங்கள் நாடு",form_msg:"எதிர்காலத்திற்கான உங்கள் செய்தி...",form_vis:"என் செய்தி",form_public:"பொது — 2036 இல் தெரியும்",form_private:"தனிப்பட்ட — 2036 வரை முத்திரையிடப்பட்டது",form_chars:"எழுத்துக்கள் மீதமுள்ளன",form_submit:"என் செய்தியை முத்திரையிடுங்கள்",form_note:"உங்கள் செய்தி குறியாக்கம் செய்யப்பட்டு நிரந்தரமாக சேமிக்கப்படுகிறது.",live_title:"நேரடி — இப்போது முத்திரையிடப்படும் செய்திகள்",why_title:"நீங்கள் ஏன் வருத்தப்படுவீர்கள்?",why1_t:"நீங்கள் இருந்தீர்கள்.",why1_d:"2036 இல், யாரோ உங்கள் வார்த்தைகளை படிப்பார்கள், 2026 இல் நீங்கள் இங்கே இருந்தீர்கள் என்று தெரிந்துகொள்வார்கள்.",why2_t:"ஒரு காபியை விட குறைவானது.",why2_d:"வெறும் ₹85. நீங்கள் ஏற்கனவே மறந்த விஷயங்களுக்கு அதிகம் செலவழித்தீர்கள்.",why3_t:"கவுண்டர் ஒருபோதும் மீட்டமைக்கப்படுவதில்லை.",why3_d:"செலுத்தும் ஒவ்வொரு நபரும் நிரந்தர பதிவின் ஒரு பகுதியாகிறார்.",cd_title:"கேப்சூல் திறக்கப்படுகிறது",days:"நாட்கள்",hours:"மணி நேரம்",mins:"நிமிடங்கள்",secs:"வினாடிகள்",trust1:"256-பிட் குறியாக்கம்",trust2:"Stripe கட்டணம்",trust3:"நிரந்தரமாக ஹோஸ்ட் செய்யப்பட்டது",transparency:"முழு வெளிப்படைத்தன்மை",modal_title:"உங்கள் செய்தி முத்திரையிடப்படுவதற்கு தயாராக உள்ளது 🔒",modal_body:"₹85 கட்டணத்தை முடிக்கவும், 2036 வரை உங்கள் செய்தியை நிரந்தரமாக முத்திரையிடவும்.",modal_pay:"Stripe மூலம் {c} செலுத்துங்கள் →",modal_cancel:"ஒருவேளை பிறகு",success_title:"நீங்கள் இப்போது வரலாற்றின் ஒரு பகுதியாக இருக்கிறீர்கள் ✨",success_sub:"உங்கள் செய்தி முத்திரையிடப்பட்டது. ஜனவரி 1, 2036 அன்று திரும்புங்கள்.",success_share:"பகிர்ந்து மற்றவர்களை ஊக்குவியுங்கள்:",share_tw:"X இல் பகிருங்கள்",share_wa:"WhatsApp இல் பகிருங்கள்",share_fb:"Facebook இல் பகிருங்கள்",share_copy:"இணைப்பை நகலெடுக்கவும்",copied:"நகலெடுக்கப்பட்டது!",footer:"© 2026 OneMessage.world · மனிதகுலத்தின் நிரந்தர பதிவு",currency:"₹85"},
 };
 
-const IP_MAP={BR:"pt",SA:"ar",AE:"ar",EG:"ar",IQ:"ar",JO:"ar",KW:"ar",LB:"ar",LY:"ar",MA:"ar",OM:"ar",QA:"ar",SD:"ar",SY:"ar",TN:"ar",YE:"ar",DZ:"ar",ES:"es",MX:"es",AR:"es",CO:"es",CL:"es",PE:"es",VE:"es",EC:"es",BO:"es",GT:"es",FR:"fr",CI:"fr",SN:"fr",DE:"de",AT:"de",IT:"it",JP:"ja",CN:"zh",TW:"zh",HK:"zh",KR:"ko",IN:"hi",TR:"tr",RU:"ru",BY:"ru",KZ:"ru",ID:"id",BD:"bn",PK:"ur",VN:"vi",TH:"th",NL:"nl",BE:"nl",PL:"pl",SE:"sv",GR:"el",IL:"he",PH:"fil",MY:"ms",BN:"ms",UA:"uk",RO:"ro",CZ:"cs",HU:"hu",IR:"fa",KE:"sw",TZ:"sw",ET:"am",LK:"ta"};
+const IP_MAP={BR:"pt",PT:"pt",AO:"pt",MZ:"pt",SA:"ar",AE:"ar",EG:"ar",IQ:"ar",JO:"ar",KW:"ar",LB:"ar",LY:"ar",MA:"ar",OM:"ar",QA:"ar",SD:"ar",SY:"ar",TN:"ar",YE:"ar",DZ:"ar",MR:"ar",ES:"es",MX:"es",AR:"es",CO:"es",CL:"es",PE:"es",VE:"es",EC:"es",BO:"es",GT:"es",HN:"es",SV:"es",NI:"es",CR:"es",DO:"es",CU:"es",PY:"es",UY:"es",FR:"fr",CI:"fr",SN:"fr",CM:"fr",CD:"fr",CG:"fr",GA:"fr",BJ:"fr",BF:"fr",ML:"fr",NE:"fr",TG:"fr",MG:"fr",DE:"de",AT:"de",CH:"de",IT:"it",JP:"ja",CN:"zh",TW:"zh",HK:"zh",MO:"zh",KR:"ko",IN:"hi",NP:"hi",TR:"tr",RU:"ru",BY:"ru",KZ:"ru",ID:"id",BD:"bn",PK:"ur",VN:"vi",TH:"th",NL:"nl",BE:"nl",PL:"pl",SE:"sv",NO:"sv",DK:"sv",GR:"el",IL:"he",PH:"fil",MY:"ms",BN:"ms",SG:"ms",UA:"uk",RO:"ro",CZ:"cs",SK:"cs",HU:"hu",IR:"fa",KE:"sw",TZ:"sw",ET:"am",LK:"ta"};
 const CURRENCY_MAP={
   en:{display:"$1"},
   pt:{display:"R$5"},
@@ -76,6 +76,41 @@ const CURRENCY_MAP={
   ta:{display:"₹85"},
 };
 
+const COUNTRY_CURRENCY_MAP={
+  US:{display:"$1"},GB:{display:"£1"},CA:{display:"CA$1.40"},AU:{display:"A$1.55"},NZ:{display:"NZ$1.65"},
+  BR:{display:"R$5"},MX:{display:"MX$17"},AR:{display:"$1.000 ARS"},CO:{display:"$4.200 COP"},CL:{display:"$950 CLP"},
+  PE:{display:"S/3.75"},EC:{display:"$1"},BO:{display:"Bs7"},GT:{display:"Q8"},HN:{display:"L25"},
+  SV:{display:"$1"},NI:{display:"C$37"},CR:{display:"₡515"},DO:{display:"RD$60"},CU:{display:"$1"},
+  PY:{display:"₲7.400"},UY:{display:"$38 UY"},VE:{display:"$1"},GY:{display:"$1"},TT:{display:"TT$7"},JM:{display:"J$155"},
+  PT:{display:"€1"},ES:{display:"€1"},FR:{display:"€1"},DE:{display:"€1"},IT:{display:"€1"},NL:{display:"€1"},
+  BE:{display:"€1"},AT:{display:"€1"},CH:{display:"CHF 0.90"},SE:{display:"kr10"},NO:{display:"kr10"},DK:{display:"kr7"},
+  FI:{display:"€1"},IE:{display:"€1"},LU:{display:"€1"},PL:{display:"4 zł"},CZ:{display:"25 Kč"},SK:{display:"€1"},
+  HU:{display:"370 Ft"},RO:{display:"5 lei"},BG:{display:"1.80 лв"},HR:{display:"€1"},GR:{display:"€1"},
+  LT:{display:"€1"},LV:{display:"€1"},EE:{display:"€1"},SI:{display:"€1"},CY:{display:"€1"},MT:{display:"€1"},
+  RS:{display:"107 RSD"},ME:{display:"€1"},MK:{display:"55 MKD"},AL:{display:"107 ALL"},BA:{display:"1.80 KM"},
+  UA:{display:"₴40"},RU:{display:"₽90"},BY:{display:"3.25 Br"},MD:{display:"18 MDL"},
+  TR:{display:"₺35"},GE:{display:"2.70 ₾"},AM:{display:"390 ֏"},AZ:{display:"1.70 ₼"},
+  KZ:{display:"₸450"},UZ:{display:"12.500 soʻm"},KG:{display:"87 с"},TJ:{display:"10.90 SM"},
+  SA:{display:"3.75 ﷼"},AE:{display:"3.67 AED"},QA:{display:"3.64 QAR"},KW:{display:"0.31 KD"},
+  BH:{display:"0.38 BD"},OM:{display:"0.39 OMR"},JO:{display:"0.71 JD"},IL:{display:"₪4"},PS:{display:"₪4"},
+  IQ:{display:"1.300 IQD"},LB:{display:"$1"},SY:{display:"$1"},YE:{display:"$1"},SD:{display:"$1"},
+  IR:{display:"42.000 ﷼"},EG:{display:"50 ج.م"},MA:{display:"10 MAD"},DZ:{display:"135 DZD"},
+  TN:{display:"3.10 TND"},LY:{display:"4.80 LYD"},MR:{display:"360 MRU"},
+  IN:{display:"₹85"},PK:{display:"Rs280"},BD:{display:"৳110"},NP:{display:"Rs133"},LK:{display:"LKR 310"},BT:{display:"₹85"},
+  JP:{display:"¥150"},CN:{display:"¥7"},TW:{display:"NT$32"},HK:{display:"HK$8"},MO:{display:"MOP8"},
+  KR:{display:"₩1.400"},TH:{display:"฿35"},VN:{display:"25.000₫"},ID:{display:"Rp16.000"},
+  MY:{display:"RM5"},SG:{display:"S$1.35"},PH:{display:"₱55"},BN:{display:"B$1.35"},
+  MM:{display:"2.100 MMK"},KH:{display:"4.100 KHR"},LA:{display:"20.000 LAK"},
+  NG:{display:"₦1.600"},GH:{display:"14 GHS"},KE:{display:"KSh130"},TZ:{display:"TSh2.600"},
+  ET:{display:"120 ETB"},UG:{display:"3.700 UGX"},ZA:{display:"R18"},ZM:{display:"26 ZMW"},
+  CI:{display:"655 XOF"},SN:{display:"655 XOF"},ML:{display:"655 XOF"},BF:{display:"655 XOF"},
+  NE:{display:"655 XOF"},TG:{display:"655 XOF"},BJ:{display:"655 XOF"},CM:{display:"655 XAF"},
+  CD:{display:"2.800 FC"},CG:{display:"655 XAF"},GA:{display:"655 XAF"},AO:{display:"850 Kz"},
+  MZ:{display:"64 MT"},MG:{display:"4.500 Ar"},
+};
+
+const SHARE_LABEL={en:"Share",pt:"Compartilhar",es:"Compartir",fr:"Partager",de:"Teilen",it:"Condividi",ja:"シェア",zh:"分享",ko:"공유",hi:"शेयर करें",ar:"مشاركة",tr:"Paylaş",ru:"Поделиться",id:"Bagikan",bn:"শেয়ার",ur:"شیئر کریں",vi:"Chia sẻ",th:"แชร์",nl:"Delen",pl:"Udostępnij",sv:"Dela",el:"Κοινοποίηση",he:"שתף",fil:"Ibahagi",ms:"Kongsi",uk:"Поділитися",ro:"Distribuie",cs:"Sdílet",hu:"Megosztás",fa:"اشتراک‌گذاری",sw:"Shiriki",am:"አጋራ",ta:"பகிர்"};
+
 const COUNTRIES=["🇺🇸 United States","🇧🇷 Brazil","🇸🇦 Saudi Arabia","🇦🇪 UAE","🇪🇬 Egypt","🇮🇶 Iraq","🇯🇴 Jordan","🇱🇧 Lebanon","🇲🇦 Morocco","🇩🇿 Algeria","🇹🇳 Tunisia","🇶🇦 Qatar","🇰🇼 Kuwait","🇮🇳 India","🇬🇧 UK","🇫🇷 France","🇩🇪 Germany","🇪🇸 Spain","🇲🇽 Mexico","🇨🇦 Canada","🇦🇺 Australia","🇯🇵 Japan","🇨🇳 China","🇰🇷 South Korea","🇮🇹 Italy","🇵🇹 Portugal","🇷🇺 Russia","🇹🇷 Turkey","🇮🇩 Indonesia","🇵🇰 Pakistan","🇦🇫 Afghanistan","🇦🇱 Albania","🇦🇩 Andorra","🇦🇴 Angola","🇦🇬 Antigua and Barbuda","🇦🇷 Argentina","🇦🇲 Armenia","🇦🇹 Austria","🇦🇿 Azerbaijan","🇧🇸 Bahamas","🇧🇭 Bahrain","🇧🇩 Bangladesh","🇧🇧 Barbados","🇧🇾 Belarus","🇧🇪 Belgium","🇧🇿 Belize","🇧🇯 Benin","🇧🇹 Bhutan","🇧🇴 Bolivia","🇧🇦 Bosnia and Herzegovina","🇧🇼 Botswana","🇧🇳 Brunei","🇧🇬 Bulgaria","🇧🇫 Burkina Faso","🇧🇮 Burundi","🇨🇻 Cabo Verde","🇰🇭 Cambodia","🇨🇲 Cameroon","🇨🇫 Central African Republic","🇹🇩 Chad","🇨🇱 Chile","🇨🇴 Colombia","🇰🇲 Comoros","🇨🇩 Congo (DR)","🇨🇬 Congo (Republic)","🇨🇷 Costa Rica","🇨🇮 Côte d'Ivoire","🇭🇷 Croatia","🇨🇺 Cuba","🇨🇾 Cyprus","🇨🇿 Czech Republic","🇩🇰 Denmark","🇩🇯 Djibouti","🇩🇲 Dominica","🇩🇴 Dominican Republic","🇪🇨 Ecuador","🇸🇻 El Salvador","🇬🇶 Equatorial Guinea","🇪🇷 Eritrea","🇪🇪 Estonia","🇸🇿 Eswatini","🇪🇹 Ethiopia","🇫🇯 Fiji","🇫🇮 Finland","🇬🇦 Gabon","🇬🇲 Gambia","🇬🇪 Georgia","🇬🇭 Ghana","🇬🇷 Greece","🇬🇩 Grenada","🇬🇹 Guatemala","🇬🇳 Guinea","🇬🇼 Guinea-Bissau","🇬🇾 Guyana","🇭🇹 Haiti","🇭🇳 Honduras","🇭🇺 Hungary","🇮🇸 Iceland","🇮🇷 Iran","🇮🇪 Ireland","🇮🇱 Israel","🇯🇲 Jamaica","🇰🇿 Kazakhstan","🇰🇪 Kenya","🇰🇮 Kiribati","🇽🇰 Kosovo","🇰🇬 Kyrgyzstan","🇱🇦 Laos","🇱🇻 Latvia","🇱🇸 Lesotho","🇱🇷 Liberia","🇱🇾 Libya","🇱🇮 Liechtenstein","🇱🇹 Lithuania","🇱🇺 Luxembourg","🇲🇬 Madagascar","🇲🇼 Malawi","🇲🇾 Malaysia","🇲🇻 Maldives","🇲🇱 Mali","🇲🇹 Malta","🇲🇭 Marshall Islands","🇲🇷 Mauritania","🇲🇺 Mauritius","🇫🇲 Micronesia","🇲🇩 Moldova","🇲🇨 Monaco","🇲🇳 Mongolia","🇲🇪 Montenegro","🇲🇿 Mozambique","🇲🇲 Myanmar","🇳🇦 Namibia","🇳🇷 Nauru","🇳🇵 Nepal","🇳🇱 Netherlands","🇳🇿 New Zealand","🇳🇮 Nicaragua","🇳🇪 Niger","🇳🇬 Nigeria","🇰🇵 North Korea","🇲🇰 North Macedonia","🇳🇴 Norway","🇴🇲 Oman","🇵🇼 Palau","🇵🇸 Palestine","🇵🇦 Panama","🇵🇬 Papua New Guinea","🇵🇾 Paraguay","🇵🇪 Peru","🇵🇭 Philippines","🇵🇱 Poland","🇷🇴 Romania","🇷🇼 Rwanda","🇰🇳 Saint Kitts and Nevis","🇱🇨 Saint Lucia","🇻🇨 Saint Vincent and the Grenadines","🇼🇸 Samoa","🇸🇲 San Marino","🇸🇹 São Tomé and Príncipe","🇸🇳 Senegal","🇷🇸 Serbia","🇸🇨 Seychelles","🇸🇱 Sierra Leone","🇸🇬 Singapore","🇸🇰 Slovakia","🇸🇮 Slovenia","🇸🇧 Solomon Islands","🇸🇴 Somalia","🇿🇦 South Africa","🇸🇸 South Sudan","🇱🇰 Sri Lanka","🇸🇩 Sudan","🇸🇷 Suriname","🇸🇪 Sweden","🇨🇭 Switzerland","🇸🇾 Syria","🇹🇼 Taiwan","🇹🇯 Tajikistan","🇹🇿 Tanzania","🇹🇭 Thailand","🇹🇱 Timor-Leste","🇹🇬 Togo","🇹🇴 Tonga","🇹🇹 Trinidad and Tobago","🇹🇻 Tuvalu","🇺🇬 Uganda","🇺🇦 Ukraine","🇺🇾 Uruguay","🇺🇿 Uzbekistan","🇻🇺 Vanuatu","🇻🇦 Vatican City","🇻🇪 Venezuela","🇻🇳 Vietnam","🇾🇪 Yemen","🇿🇲 Zambia","🇿🇼 Zimbabwe","🌍 Other"];
 
 const FEED=[{f:"🇺🇸",n:"J. Williams",t:"2m"},{f:"🇧🇷",n:"M. Silva",t:"5m"},{f:"🇸🇦",n:"Khaled A.",t:"8m"},{f:"🇯🇵",n:"Y. Tanaka",t:"11m"},{f:"🇩🇪",n:"F. Müller",t:"15m"},{f:"🇮🇳",n:"P. Sharma",t:"18m"},{f:"🇫🇷",n:"C. Dupont",t:"22m"},{f:"🇰🇷",n:"J. Kim",t:"25m"},{f:"🇲🇽",n:"L. García",t:"29m"},{f:"🇦🇪",n:"Fatima K.",t:"33m"},{f:"🇨🇳",n:"Wei Zhang",t:"37m"},{f:"🇬🇧",n:"S. Patel",t:"41m"}];
@@ -109,6 +144,7 @@ function useAnim(tgt){
 
 export default function App(){
   const[lang,setLang]=useState("en");
+  const[countryCode,setCountryCode]=useState("");
   const[count,setCount]=useState(0);
   const[raised,setRaised]=useState(0);
   const[countries,setCountries]=useState(0);
@@ -126,14 +162,14 @@ export default function App(){
   const cd=useCD();
   const ac=useAnim(count);
   const t=T[lang]||T.en;
-  const curr=CURRENCY_MAP[lang]||CURRENCY_MAP.en;
+  const curr=(countryCode&&COUNTRY_CURRENCY_MAP[countryCode])||CURRENCY_MAP[lang]||CURRENCY_MAP.en;
   const rtl=t.dir==="rtl";
   const MAX=280;
 
   const loadStats=(bust)=>fetch("/api/stats"+(bust?"?_="+Date.now():"")).then(r=>r.json()).then(d=>{if(typeof d.count==="number")setCount(d.count);if(typeof d.raised==="number")setRaised(d.raised);if(typeof d.countries==="number")setCountries(d.countries);}).catch(()=>{});
 
   useEffect(()=>{
-    fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{const l=IP_MAP[d.country_code];if(l)setLang(l);}).catch(()=>{});
+    fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{const cc=d.country_code;if(cc)setCountryCode(cc);const l=IP_MAP[cc];if(l)setLang(l);}).catch(()=>{});
     loadStats();
     const si=setInterval(()=>loadStats(),30000);
     return()=>clearInterval(si);
@@ -372,6 +408,7 @@ export default function App(){
     .sb-wa:hover{border-color:#25d366;color:#25d366;background:rgba(37,211,102,.07)}
     .sb-fb:hover{border-color:#1877f2;color:#1877f2;background:rgba(24,119,242,.07)}
     .sb-ig:hover{border-color:#e1306c;color:#e1306c;background:rgba(225,48,108,.07)}
+    .sb-share{padding:13px 40px;font-size:.9rem;letter-spacing:.04em}
     .sb-tt:hover{border-color:#69c9d0;color:#69c9d0;background:rgba(105,201,208,.07)}
     .sb-lk:hover,.sb.cp{border-color:var(--g);color:var(--g);background:rgba(212,175,55,.08)}
     footer{text-align:center;padding:28px 20px;color:var(--mt);font-size:.72rem;border-top:1px solid var(--br);position:relative;z-index:1;letter-spacing:.05em}
@@ -477,12 +514,7 @@ export default function App(){
     <p style={{color:"var(--mt)",fontSize:".88rem",lineHeight:1.72,marginBottom:6}}>{t.success_sub}</p>
     <p style={{fontSize:".66rem",color:"var(--mt)",letterSpacing:".16em",textTransform:"uppercase",opacity:.6,marginBottom:0}}>{t.success_share}</p>
     <div className="sbs">
-      <a className="sb sb-tw" href={`https://twitter.com/intent/tweet?text=${st()}&url=${encodeURIComponent("https://onemessage.world")}`} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.731-8.836L1.254 2.25H8.08l4.259 5.629zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>{t.share_tw}</a>
-      <a className="sb sb-wa" href={`https://wa.me/?text=${st()}`} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>{t.share_wa}</a>
-      <a className="sb sb-fb" href={`https://www.facebook.com/sharer/sharer.php?u=https://onemessage.world`} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>{t.share_fb}</a>
-      <button className="sb sb-ig" onClick={shareInstagram}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</button>
-      <button className="sb sb-tt" onClick={copyTikTok}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.77 1.52V6.75a4.85 4.85 0 01-1-.06z"/></svg>TikTok</button>
-      <button className={`sb sb-lk${copied?" cp":""}`} onClick={cpLink}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>{copied?t.copied:t.share_copy}</button>
+      <button className="sb sb-ig sb-share" onClick={shareInstagram}><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>{SHARE_LABEL[lang]||"Compartilhar"}</button>
     </div>
   </div>
   </div>}
