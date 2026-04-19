@@ -52,8 +52,8 @@ function useAnim(tgt){
 
 export default function App(){
   const[lang,setLang]=useState("en");
-  const[count,setCount]=useState(4271);
-  const[raised,setRaised]=useState(2867.33);
+  const[count,setCount]=useState(0);
+  const[raised,setRaised]=useState(0);
   const[form,setForm]=useState({name:"",country:"",msg:"",vis:"public"});
   const[modal,setModal]=useState(false);
   const[success,setSuccess]=useState(false);
@@ -69,8 +69,7 @@ export default function App(){
 
   useEffect(()=>{
     fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{const l=IP_MAP[d.country_code];if(l)setLang(l);}).catch(()=>{});
-    window.storage?.get("om_c").then(r=>{if(r?.value){const n=parseInt(r.value);if(n>4271)setCount(n);}}).catch(()=>{});
-    window.storage?.get("om_r").then(r=>{if(r?.value){const n=parseFloat(r.value);if(n>2867)setRaised(n);}}).catch(()=>{});
+    fetch("/api/stats").then(r=>r.json()).then(d=>{if(typeof d.count==="number")setCount(d.count);if(typeof d.raised==="number")setRaised(d.raised);}).catch(()=>{});
   },[]);
 
   const goForm=()=>{setShowForm(true);setTimeout(()=>formRef.current?.scrollIntoView({behavior:"smooth",block:"start"}),80);};
@@ -244,7 +243,7 @@ export default function App(){
   </section>
 
   <div className="trt"><div className="ti"><div className="td"/>{t.trust1}</div><div className="ti"><div className="td"/>{t.trust2}</div><div className="ti"><div className="td"/>{t.trust3}</div></div>
-  <footer>{t.footer}</footer>
+  <footer>{t.footer}<span style={{margin:"0 10px",opacity:.4}}>·</span><a href="/legal" style={{color:"var(--mt)",textDecoration:"underline",textUnderlineOffset:3}}>Terms of Service</a><span style={{margin:"0 10px",opacity:.4}}>·</span><a href="/legal" style={{color:"var(--mt)",textDecoration:"underline",textUnderlineOffset:3}}>Privacy Policy</a></footer>
 
   {modal&&<div className="ov" onClick={e=>{if(e.target===e.currentTarget)setModal(false)}}><div className="mod"><span className="pb">$1</span><h2>{t.modal_title}</h2><p>{t.modal_body}</p><button className="mp" onClick={pay}>{t.modal_pay}</button><br/><button className="mc" onClick={()=>setModal(false)}>{t.modal_cancel}</button></div></div>}
 

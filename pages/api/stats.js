@@ -31,6 +31,6 @@ export default async function handler(req, res) {
       countries: uniqueCountries || 0,
     })
   } catch (err) {
-    res.status(500).json({ count: 4271, raised: 2867.33, countries: 87 })
+    res.status(500).json({ count: 0, raised: 0, countries: 0 })
   }
 }
