@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import Head from "next/head";
+import Link from "next/link";
 
 const T = {
   en: {dir:"ltr",cta_lang:"EN",badge:"🌍 Digital Time Capsule · Opens January 1, 2036",hero1:"One message.",hero2:"One dollar.",hero3:"Forever.",sub:"Write your message to the world. It will be sealed until January 1, 2036 — then revealed to everyone, everywhere, forever.",counter_msgs:"messages sealed",counter_countries:"countries",counter_raised:"raised so far",cta:"Leave My Message — $1",cta_sub:"Secure payment · 60 seconds · Join history",story_badge:"WHY THIS EXISTS",story_title:"A snapshot of humanity, sealed in time.",story_p1:"In 2026, we asked a simple question: if you could say one thing to the entire world — and know it would be read in 10 years — what would you say?",story_p2:"OneMessage.world is not a product. It's a permanent record. Every person who pays $1 becomes part of a living archive of human thought, hope, fear, and love — exactly as it existed in 2026.",story_p3:"When the capsule opens on January 1, 2036, every message will be published for free, forever. The world will read what humanity was thinking today.",story_quote:"\"Future generations will look back at this capsule the way we look at time capsules buried in 1926.\"",form_title:"Write your message to 2036",form_name:"Your name (optional)",form_country:"Your country",form_msg:"Your message to the future...",form_vis:"My message is",form_public:"Public — visible in 2036",form_private:"Private — sealed until 2036",form_chars:"characters remaining",form_submit:"Seal My Message — $1",form_note:"Your message is encrypted and stored permanently. If this site ever closes, all messages will be published publicly for free.",live_title:"Live — Messages Being Sealed Right Now",why_title:"Why will you regret not doing this?",why1_t:"You existed.",why1_d:"In 2036, someone will read your words and know you were here — thinking, feeling, alive in 2026.",why2_t:"Less than a coffee.",why2_d:"One dollar. You've spent more on things you've already forgotten.",why3_t:"The counter never resets.",why3_d:"Every person who pays joins a permanent record. The number only goes up. Be early.",cd_title:"Capsule opens in",days:"Days",hours:"Hours",mins:"Minutes",secs:"Seconds",trust1:"256-bit encrypted",trust2:"Stripe secured",trust3:"Permanently hosted",transparency:"Full Transparency",modal_title:"Your message is almost sealed 🔒",modal_body:"Complete your $1 payment to permanently lock your message until 2036.",modal_pay:"Pay $1 with Stripe →",modal_cancel:"Maybe later",success_title:"You're now part of history ✨",success_sub:"Your message is sealed. Come back January 1, 2036.",success_share:"Share and inspire others to leave their mark:",share_tw:"Share on X",share_wa:"Share on WhatsApp",share_fb:"Share on Facebook",share_copy:"Copy Link",copied:"Copied!",footer:"© 2026 OneMessage.world · A permanent record of humanity"},
@@ -56,6 +58,7 @@ export default function App(){
   const[raised,setRaised]=useState(0);
   const[form,setForm]=useState({name:"",country:"",msg:"",vis:"public"});
   const[modal,setModal]=useState(false);
+  const[agreed,setAgreed]=useState(false);
   const[success,setSuccess]=useState(false);
   const[loading,setLoading]=useState(false);
   const[copied,setCopied]=useState(false);
@@ -69,15 +72,32 @@ export default function App(){
 
   useEffect(()=>{
     fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{const l=IP_MAP[d.country_code];if(l)setLang(l);}).catch(()=>{});
-    fetch("/api/stats").then(r=>r.json()).then(d=>{if(typeof d.count==="number")setCount(d.count);if(typeof d.raised==="number")setRaised(d.raised);}).catch(()=>{});
+    const loadStats=()=>fetch("/api/stats").then(r=>r.json()).then(d=>{if(typeof d.count==="number")setCount(d.count);if(typeof d.raised==="number")setRaised(d.raised);}).catch(()=>{});
+    loadStats();
+    const si=setInterval(loadStats,30000);
+    return()=>clearInterval(si);
   },[]);
 
   const goForm=()=>{setShowForm(true);setTimeout(()=>formRef.current?.scrollIntoView({behavior:"smooth",block:"start"}),80);};
-  const pay=()=>{setModal(false);setSuccess(true);const nc=count+1,nr=parseFloat((raised+0.67).toFixed(2));setCount(nc);setRaised(nr);window.storage?.set("om_c",String(nc)).catch(()=>{});window.storage?.set("om_r",String(nr)).catch(()=>{});};
+  const pay=()=>{setModal(false);setAgreed(false);setSuccess(true);const nc=count+1,nr=parseFloat((raised+0.67).toFixed(2));setCount(nc);setRaised(nr);};
   const st=()=>{const m={en:"I just sealed my message for the world 🌍 Opens 2036 → OneMessage.world #OneMessage2036",ar:"تركتُ رسالتي للعالم 🌍 تُفتح 2036 ← OneMessage.world",pt:"Deixei minha mensagem para o mundo 🌍 Abre em 2036 → OneMessage.world",es:"Dejé mi mensaje para el mundo 🌍 Se abre en 2036 → OneMessage.world",fr:"J'ai laissé mon message pour le monde 🌍 S'ouvre en 2036 → OneMessage.world",de:"Ich habe meine Nachricht für die Welt hinterlassen 🌍 Öffnet 2036 → OneMessage.world",it:"Ho lasciato il mio messaggio per il mondo 🌍 Si apre nel 2036 → OneMessage.world",ja:"世界へのメッセージを残しました 🌍 2036年開封 → OneMessage.world",zh:"我留下了给世界的留言 🌍 2036年开封 → OneMessage.world",ko:"세상을 위한 메시지를 남겼습니다 🌍 2036년 개봉 → OneMessage.world",hi:"मैंने दुनिया के लिए अपना संदेश छोड़ा 🌍 2036 में खुलेगा → OneMessage.world",tr:"Dünya için mesajımı bıraktım 🌍 2036'da açılıyor → OneMessage.world",ru:"Я оставил послание миру 🌍 Открывается в 2036 → OneMessage.world",id:"Saya meninggalkan pesan untuk dunia 🌍 Dibuka 2036 → OneMessage.world"};return encodeURIComponent(m[lang]||m.en);};
   const cpLink=()=>{navigator.clipboard?.writeText("https://onemessage.world").then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);}).catch(()=>{});};
 
   return(<>
+  <Head>
+    <title>OneMessage.world — Leave your message for 2036</title>
+    <meta name="description" content="Pay $1, seal your message for humanity. Opens January 1, 2036."/>
+    <meta property="og:title" content="OneMessage.world — Leave your message for 2036"/>
+    <meta property="og:description" content="Pay $1, seal your message for humanity. Opens January 1, 2036."/>
+    <meta property="og:image" content="https://onemessage.world/og.png"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://onemessage.world"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="OneMessage.world — Leave your message for 2036"/>
+    <meta name="twitter:description" content="Pay $1, seal your message for humanity. Opens January 1, 2036."/>
+    <meta name="twitter:image" content="https://onemessage.world/og.png"/>
+    <link rel="canonical" href="https://onemessage.world"/>
+  </Head>
   <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
     *{margin:0;padding:0;box-sizing:border-box}
@@ -243,9 +263,9 @@ export default function App(){
   </section>
 
   <div className="trt"><div className="ti"><div className="td"/>{t.trust1}</div><div className="ti"><div className="td"/>{t.trust2}</div><div className="ti"><div className="td"/>{t.trust3}</div></div>
-  <footer>{t.footer}<span style={{margin:"0 10px",opacity:.4}}>·</span><a href="/legal" style={{color:"var(--mt)",textDecoration:"underline",textUnderlineOffset:3}}>Terms of Service</a><span style={{margin:"0 10px",opacity:.4}}>·</span><a href="/legal" style={{color:"var(--mt)",textDecoration:"underline",textUnderlineOffset:3}}>Privacy Policy</a></footer>
+  <footer>{t.footer}<span style={{margin:"0 10px",opacity:.4}}>·</span><Link href="/legal" style={{color:"var(--mt)",textDecoration:"underline",textUnderlineOffset:3}}>Terms of Service</Link><span style={{margin:"0 10px",opacity:.4}}>·</span><Link href="/legal" style={{color:"var(--mt)",textDecoration:"underline",textUnderlineOffset:3}}>Privacy Policy</Link></footer>
 
-  {modal&&<div className="ov" onClick={e=>{if(e.target===e.currentTarget)setModal(false)}}><div className="mod"><span className="pb">$1</span><h2>{t.modal_title}</h2><p>{t.modal_body}</p><button className="mp" onClick={pay}>{t.modal_pay}</button><br/><button className="mc" onClick={()=>setModal(false)}>{t.modal_cancel}</button></div></div>}
+  {modal&&<div className="ov" onClick={e=>{if(e.target===e.currentTarget){setModal(false);setAgreed(false);}}}><div className="mod"><span className="pb">$1</span><h2>{t.modal_title}</h2><p>{t.modal_body}</p><label style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer",margin:"16px 0",textAlign:"left"}}><input type="checkbox" checked={agreed} onChange={e=>setAgreed(e.target.checked)} style={{marginTop:3,accentColor:"#D4AF37",flexShrink:0,width:15,height:15}}/><span style={{fontSize:".78rem",color:"var(--mt)",lineHeight:1.55}}>I agree to the <Link href="/legal" target="_blank" style={{color:"#D4AF37"}}>Terms of Service</Link> and understand payments are non-refundable.</span></label><button className="mp" onClick={pay} disabled={!agreed} style={{opacity:agreed?1:.4,cursor:agreed?"pointer":"not-allowed"}}>{t.modal_pay}</button><br/><button className="mc" onClick={()=>{setModal(false);setAgreed(false);}}>{t.modal_cancel}</button></div></div>}
 
   {success&&<div className="ov"><div className="mod"><div className="sic">✉️</div><h2>{t.success_title}</h2><p>{t.success_sub}</p><p style={{fontSize:".82rem",color:"var(--mt)",marginTop:18}}>{t.success_share}</p><div className="sbs"><a className="sb" href={`https://twitter.com/intent/tweet?text=${st()}`} target="_blank" rel="noreferrer">🐦 {t.share_tw}</a><a className="sb" href={`https://wa.me/?text=${st()}`} target="_blank" rel="noreferrer">💬 {t.share_wa}</a><a className="sb" href={`https://www.facebook.com/sharer/sharer.php?u=https://onemessage.world`} target="_blank" rel="noreferrer">👤 {t.share_fb}</a><button className={`sb${copied?" cp":""}`} onClick={cpLink}>🔗 {copied?t.copied:t.share_copy}</button></div></div></div>}
   </>);

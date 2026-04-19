@@ -33,12 +33,21 @@ export default async function handler(req, res) {
 
     if (messageId) {
       const admin = supabaseAdmin()
+
+      // Count paid messages to assign the next message_number
+      const { count: paidCount } = await admin
+        .from('messages')
+        .select('*', { count: 'exact', head: true })
+        .eq('paid', true)
+
+      const messageNumber = (paidCount || 0) + 1
+
       await admin
         .from('messages')
-        .update({ paid: true })
+        .update({ paid: true, message_number: messageNumber })
         .eq('id', messageId)
 
-      console.log(`✅ Message ${messageId} marked as paid`)
+      console.log(`✅ Message ${messageId} marked as paid (#${messageNumber})`)
     }
   }
 

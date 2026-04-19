@@ -14,6 +14,27 @@ export default async function handler(req, res) {
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch messages' })
     }
+  } else if (req.method === 'PATCH') {
+    const { id } = req.query
+    if (!id) return res.status(400).json({ error: 'Missing id' })
+
+    const updates = {}
+    if (typeof req.body?.reviewed === 'boolean') updates.reviewed = req.body.reviewed
+    if (typeof req.body?.flagged === 'boolean') updates.flagged = req.body.flagged
+    if (Object.keys(updates).length === 0) return res.status(400).json({ error: 'No valid fields to update' })
+
+    try {
+      const admin = supabaseAdmin()
+      const { error } = await admin
+        .from('messages')
+        .update(updates)
+        .eq('id', id)
+
+      if (error) throw error
+      res.status(200).json({ success: true })
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to update message' })
+    }
   } else if (req.method === 'DELETE') {
     const { id } = req.query
     if (!id) return res.status(400).json({ error: 'Missing id' })
