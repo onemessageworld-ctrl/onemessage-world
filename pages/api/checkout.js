@@ -39,7 +39,7 @@ export default async function handler(req, res) {
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}&msg_id=${msg.id}`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/?paid=1&num=${msg.message_number||''}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}`,
       metadata: {
         message_id: msg.id,

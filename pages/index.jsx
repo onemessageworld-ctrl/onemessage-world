@@ -115,6 +115,8 @@ export default function App(){
   const[modal,setModal]=useState(false);
   const[agreed,setAgreed]=useState(false);
   const[success,setSuccess]=useState(false);
+  const[msgNum,setMsgNum]=useState(null);
+  const[ttCopied,setTtCopied]=useState(false);
   const[loading,setLoading]=useState(false);
   const[copied,setCopied]=useState(false);
   const[showForm,setShowForm]=useState(false);
@@ -149,10 +151,55 @@ export default function App(){
     return()=>clearInterval(fi);
   },[]);
 
+
+  useEffect(()=>{
+    if(typeof window!=='undefined'){
+      const p=new URLSearchParams(window.location.search);
+      if(p.get('paid')==='1'){
+        const n=p.get('num');
+        setMsgNum(n||null);
+        setSuccess(true);
+        window.history.replaceState({},'','/');
+      }
+    }
+  },[]);
   const goForm=()=>{setShowForm(true);setTimeout(()=>formRef.current?.scrollIntoView({behavior:"smooth",block:"start"}),80);};
-  const pay=()=>{setModal(false);setAgreed(false);setSuccess(true);const nc=count+1,nr=parseFloat((raised+0.67).toFixed(2));setCount(nc);setRaised(nr);};
+  const pay=async()=>{
+    if(loading||!agreed)return;
+    setLoading(true);setModal(false);setAgreed(false);
+    try{
+      const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:form.name,country:form.country,message:form.msg,visibility:form.vis})});
+      const d=await r.json();
+      if(d.url){window.location.href=d.url;}
+      else{alert(d.error||'Payment failed. Please try again.');setLoading(false);}
+    }catch(e){alert('Network error. Please try again.');setLoading(false);}
+  };
   const st=()=>{const m={en:"I just sealed my message for the world 🌍 Opens 2036 → OneMessage.world #OneMessage2036",ar:"تركتُ رسالتي للعالم 🌍 تُفتح 2036 ← OneMessage.world",pt:"Deixei minha mensagem para o mundo 🌍 Abre em 2036 → OneMessage.world",es:"Dejé mi mensaje para el mundo 🌍 Se abre en 2036 → OneMessage.world",fr:"J'ai laissé mon message pour le monde 🌍 S'ouvre en 2036 → OneMessage.world",de:"Ich habe meine Nachricht für die Welt hinterlassen 🌍 Öffnet 2036 → OneMessage.world",it:"Ho lasciato il mio messaggio per il mondo 🌍 Si apre nel 2036 → OneMessage.world",ja:"世界へのメッセージを残しました 🌍 2036年開封 → OneMessage.world",zh:"我留下了给世界的留言 🌍 2036年开封 → OneMessage.world",ko:"세상을 위한 메시지를 남겼습니다 🌍 2036년 개봉 → OneMessage.world",hi:"मैंने दुनिया के लिए अपना संदेश छोड़ा 🌍 2036 में खुलेगा → OneMessage.world",tr:"Dünya için mesajımı bıraktım 🌍 2036'da açılıyor → OneMessage.world",ru:"Я оставил послание миру 🌍 Открывается в 2036 → OneMessage.world",id:"Saya meninggalkan pesan untuk dunia 🌍 Dibuka 2036 → OneMessage.world"};return encodeURIComponent(m[lang]||m.en);};
   const cpLink=()=>{navigator.clipboard?.writeText("https://onemessage.world").then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);}).catch(()=>{});};
+  const downloadCard=()=>{
+    const cv=document.createElement('canvas');cv.width=1080;cv.height=1080;
+    const x=cv.getContext('2d');
+    const g=x.createLinearGradient(0,0,1080,1080);
+    g.addColorStop(0,'#05070F');g.addColorStop(.5,'#090C18');g.addColorStop(1,'#0D1020');
+    x.fillStyle=g;x.fillRect(0,0,1080,1080);
+    x.strokeStyle='#D4AF37';x.lineWidth=10;x.strokeRect(24,24,1032,1032);
+    x.strokeStyle='rgba(212,175,55,.22)';x.lineWidth=2;x.strokeRect(48,48,984,984);
+    const dc=(cx,cy,ang)=>{x.save();x.translate(cx,cy);x.rotate(ang);x.strokeStyle='#D4AF37';x.lineWidth=4;x.beginPath();x.moveTo(0,0);x.lineTo(72,0);x.moveTo(0,0);x.lineTo(0,72);x.stroke();x.restore();};
+    dc(48,48,0);dc(1032,48,Math.PI/2);dc(1032,1032,Math.PI);dc(48,1032,-Math.PI/2);
+    x.font='110px serif';x.textAlign='center';x.fillText('✉️',540,260);
+    x.fillStyle='#D4AF37';x.shadowColor='rgba(212,175,55,.55)';x.shadowBlur=50;
+    x.font='bold 200px Georgia,serif';x.fillText('#'+(msgNum||'?'),540,500);
+    x.shadowBlur=0;
+    x.font='54px Georgia,serif';x.fillStyle='#EDE8D8';x.fillText('OneMessage.world',540,610);
+    x.strokeStyle='rgba(212,175,55,.3)';x.lineWidth=1;x.beginPath();x.moveTo(160,650);x.lineTo(920,650);x.stroke();
+    x.font='30px sans-serif';x.fillStyle='rgba(237,232,216,.5)';x.fillText('Sealed · Opens January 1, 2036',540,712);
+    x.font='italic 26px Georgia,serif';x.fillStyle='rgba(212,175,55,.55)';x.fillText('#OneMessage2036',540,810);
+    const a=document.createElement('a');a.download='onemessage-card.png';a.href=cv.toDataURL('image/png');a.click();
+  };
+  const copyTikTok=()=>{
+    const script="I just sealed my message for the world ✉️🌍\n\nOneMessage.world is a real digital time capsule — you write one message, pay $1 to seal it, and it opens for the entire world to read on January 1, 2036.\n\nMy message is locked until 2036. What will you say to the future? 🔮\n\n👉 OneMessage.world\n\n#TimeCapsule #2036 #OneMessage2036 #FutureMessage #DigitalHistory";
+    navigator.clipboard?.writeText(script).then(()=>{setTtCopied(true);setTimeout(()=>setTtCopied(false),4000);}).catch(()=>{});
+  };
 
   return(<>
   <Head>
@@ -238,10 +285,22 @@ export default function App(){
     .pb{font-family:'Cormorant Garamond',serif;font-size:4rem;font-weight:700;color:var(--g);display:block;margin:10px 0 22px}
     .mp{width:100%;background:linear-gradient(135deg,var(--g),#9A7A0A);color:#000;padding:15px;border-radius:3px;font-size:1rem;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;margin-bottom:11px;transition:all .3s}.mp:hover{transform:translateY(-1px);box-shadow:0 5px 36px rgba(212,175,55,.38)}
     .mc{background:none;border:none;color:var(--mt);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;text-decoration:underline}
-    .sic{font-size:3.2rem;margin-bottom:18px;animation:pu 1.5s ease infinite}
-    .sbs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px}
-    .sb{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:4px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;border:1px solid var(--br);color:var(--tx);background:var(--sf);transition:all .2s;text-decoration:none}
-    .sb:hover{border-color:var(--g);color:var(--g)}.sb.cp{border-color:var(--g);background:rgba(212,175,55,.09);color:var(--g)}
+    .sic{font-size:4.5rem;margin-bottom:8px;animation:pu 2s ease infinite;display:block}
+    .smod{background:linear-gradient(160deg,#090C18,#0D1020 60%,#090C18);border:1px solid var(--br);border-radius:16px;padding:48px 36px 36px;max-width:520px;width:100%;text-align:center;animation:si .32s ease;position:relative;box-shadow:0 0 80px rgba(212,175,55,.07),inset 0 1px 0 rgba(212,175,55,.08)}
+    .sx{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);color:var(--mt);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0}
+    .sx:hover{background:rgba(255,255,255,.11);color:var(--tx);border-color:rgba(255,255,255,.2)}
+    .smn{font-family:'Cormorant Garamond',serif;font-size:4rem;font-weight:700;color:var(--g);line-height:1;margin:4px 0 2px;text-shadow:0 0 50px rgba(212,175,55,.5)}
+    .snml{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mt);margin-bottom:16px;opacity:.7}
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#0f1525;border:1px solid var(--br);color:var(--tx);padding:12px 26px;border-radius:8px;font-size:.82rem;z-index:400;animation:fu .3s ease;white-space:nowrap;box-shadow:0 4px 32px rgba(0,0,0,.7)}
+    .sbs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px}
+    .sb{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;border:1px solid rgba(212,175,55,.22);color:rgba(237,232,216,.75);background:rgba(255,255,255,.025);transition:all .22s;text-decoration:none;white-space:nowrap}
+    .sb:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.4)}
+    .sb-tw:hover{border-color:#1d9bf0;color:#1d9bf0;background:rgba(29,155,240,.07)}
+    .sb-wa:hover{border-color:#25d366;color:#25d366;background:rgba(37,211,102,.07)}
+    .sb-fb:hover{border-color:#1877f2;color:#1877f2;background:rgba(24,119,242,.07)}
+    .sb-ig:hover{border-color:#e1306c;color:#e1306c;background:rgba(225,48,108,.07)}
+    .sb-tt:hover{border-color:#69c9d0;color:#69c9d0;background:rgba(105,201,208,.07)}
+    .sb-lk:hover,.sb.cp{border-color:var(--g);color:var(--g);background:rgba(212,175,55,.08)}
     footer{text-align:center;padding:28px 20px;color:var(--mt);font-size:.72rem;border-top:1px solid var(--br);position:relative;z-index:1;letter-spacing:.05em}
     @keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     @keyframes si{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
@@ -335,8 +394,25 @@ export default function App(){
   <div className="trt"><div className="ti"><div className="td"/>{t.trust1}</div><div className="ti"><div className="td"/>{t.trust2}</div><div className="ti"><div className="td"/>{t.trust3}</div></div>
   <footer>{t.footer}<span style={{margin:"0 10px",opacity:.4}}>·</span><Link href="/legal" style={{color:"var(--mt)",textDecoration:"underline",textUnderlineOffset:3}}>Terms of Service</Link><span style={{margin:"0 10px",opacity:.4}}>·</span><Link href="/legal" style={{color:"var(--mt)",textDecoration:"underline",textUnderlineOffset:3}}>Privacy Policy</Link></footer>
 
-  {modal&&<div className="ov" onClick={e=>{if(e.target===e.currentTarget){setModal(false);setAgreed(false);}}}><div className="mod"><span className="pb">{curr.display}</span><h2>{t.modal_title}</h2><p>{t.modal_body}</p><label style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer",margin:"16px 0",textAlign:"left"}}><input type="checkbox" checked={agreed} onChange={e=>setAgreed(e.target.checked)} style={{marginTop:3,accentColor:"#D4AF37",flexShrink:0,width:15,height:15}}/><span style={{fontSize:".78rem",color:"var(--mt)",lineHeight:1.55}}>I agree to the <Link href="/legal" target="_blank" style={{color:"#D4AF37"}}>Terms of Service</Link> and understand payments are non-refundable.</span></label><button className="mp" onClick={pay} disabled={!agreed} style={{opacity:agreed?1:.4,cursor:agreed?"pointer":"not-allowed"}}>{t.modal_pay.replace('{c}',curr.display)}</button><br/><button className="mc" onClick={()=>{setModal(false);setAgreed(false);}}>{t.modal_cancel}</button></div></div>}
+  {modal&&<div className="ov" onClick={e=>{if(e.target===e.currentTarget){setModal(false);setAgreed(false);}}}><div className="mod"><span className="pb">{curr.display}</span><h2>{t.modal_title}</h2><p>{t.modal_body}</p><label style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer",margin:"16px 0",textAlign:"left"}}><input type="checkbox" checked={agreed} onChange={e=>setAgreed(e.target.checked)} style={{marginTop:3,accentColor:"#D4AF37",flexShrink:0,width:15,height:15}}/><span style={{fontSize:".78rem",color:"var(--mt)",lineHeight:1.55}}>I agree to the <Link href="/legal" target="_blank" style={{color:"#D4AF37"}}>Terms of Service</Link> and understand payments are non-refundable.</span></label><button className="mp" onClick={pay} disabled={!agreed||loading} style={{opacity:agreed&&!loading?1:.4,cursor:agreed&&!loading?"pointer":"not-allowed"}}>{loading?"Processing…":t.modal_pay.replace('{c}',curr.display)}</button><br/><button className="mc" onClick={()=>{setModal(false);setAgreed(false);}}>{t.modal_cancel}</button></div></div>}
 
-  {success&&<div className="ov"><div className="mod"><div className="sic">✉️</div><h2>{t.success_title}</h2><p>{t.success_sub}</p><p style={{fontSize:".82rem",color:"var(--mt)",marginTop:18}}>{t.success_share}</p><div className="sbs"><a className="sb" href={`https://twitter.com/intent/tweet?text=${st()}`} target="_blank" rel="noreferrer">🐦 {t.share_tw}</a><a className="sb" href={`https://wa.me/?text=${st()}`} target="_blank" rel="noreferrer">💬 {t.share_wa}</a><a className="sb" href={`https://www.facebook.com/sharer/sharer.php?u=https://onemessage.world`} target="_blank" rel="noreferrer">👤 {t.share_fb}</a><button className={`sb${copied?" cp":""}`} onClick={cpLink}>🔗 {copied?t.copied:t.share_copy}</button></div></div></div>}
+  {success&&<div className="ov"><div className="smod">
+    <button className="sx" onClick={()=>{setSuccess(false);setTtCopied(false);}}>✕</button>
+    <span className="sic">✉️</span>
+    {msgNum&&<><div className="smn">#{msgNum}</div><div className="snml">your message number</div></>}
+    <h2 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"1.65rem",marginBottom:8}}>{t.success_title}</h2>
+    <p style={{color:"var(--mt)",fontSize:".88rem",lineHeight:1.72,marginBottom:6}}>{t.success_sub}</p>
+    <p style={{fontSize:".66rem",color:"var(--mt)",letterSpacing:".16em",textTransform:"uppercase",opacity:.6,marginBottom:0}}>{t.success_share}</p>
+    <div className="sbs">
+      <a className="sb sb-tw" href={`https://twitter.com/intent/tweet?text=${st()}`} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.731-8.836L1.254 2.25H8.08l4.259 5.629zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>{t.share_tw}</a>
+      <a className="sb sb-wa" href={`https://wa.me/?text=${st()}`} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>{t.share_wa}</a>
+      <a className="sb sb-fb" href={`https://www.facebook.com/sharer/sharer.php?u=https://onemessage.world`} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>{t.share_fb}</a>
+      <button className="sb sb-ig" onClick={downloadCard}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</button>
+      <button className="sb sb-tt" onClick={copyTikTok}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.16 8.16 0 004.77 1.52V6.75a4.85 4.85 0 01-1-.06z"/></svg>TikTok</button>
+      <button className={`sb sb-lk${copied?" cp":""}`} onClick={cpLink}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>{copied?t.copied:t.share_copy}</button>
+    </div>
+  </div>
+  {ttCopied&&<div className="toast">Script copied! Now open TikTok and paste it. 🎵</div>}
+  </div>}
   </>);
 }
