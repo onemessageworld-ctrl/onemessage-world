@@ -21,7 +21,7 @@ const T = {
 
 const IP_MAP={BR:"pt",SA:"ar",AE:"ar",EG:"ar",IQ:"ar",JO:"ar",KW:"ar",LB:"ar",LY:"ar",MA:"ar",OM:"ar",QA:"ar",SD:"ar",SY:"ar",TN:"ar",YE:"ar",DZ:"ar",ES:"es",MX:"es",AR:"es",CO:"es",CL:"es",PE:"es",VE:"es",EC:"es",BO:"es",GT:"es",FR:"fr",CI:"fr",SN:"fr",DE:"de",AT:"de",IT:"it",JP:"ja",CN:"zh",TW:"zh",HK:"zh",KR:"ko",IN:"hi",TR:"tr",RU:"ru",BY:"ru",KZ:"ru",ID:"id"};
 
-const COUNTRIES=["🇺🇸 United States","🇧🇷 Brazil","🇸🇦 Saudi Arabia","🇦🇪 UAE","🇪🇬 Egypt","🇮🇶 Iraq","🇯🇴 Jordan","🇱🇧 Lebanon","🇲🇦 Morocco","🇩🇿 Algeria","🇹🇳 Tunisia","🇶🇦 Qatar","🇰🇼 Kuwait","🇮🇳 India","🇬🇧 UK","🇫🇷 France","🇩🇪 Germany","🇪🇸 Spain","🇲🇽 Mexico","🇨🇦 Canada","🇦🇺 Australia","🇯🇵 Japan","🇨🇳 China","🇰🇷 South Korea","🇮🇹 Italy","🇵🇹 Portugal","🇷🇺 Russia","🇹🇷 Turkey","🇮🇩 Indonesia","🇵🇰 Pakistan","🇳🇱 Netherlands","🇵🇱 Poland","🇻🇳 Vietnam","🇵🇭 Philippines","🇿🇦 South Africa","🇳🇬 Nigeria","🇦🇷 Argentina","🇨🇴 Colombia","🌍 Other"];
+const COUNTRIES=["🇺🇸 United States","🇧🇷 Brazil","🇸🇦 Saudi Arabia","🇦🇪 UAE","🇪🇬 Egypt","🇮🇶 Iraq","🇯🇴 Jordan","🇱🇧 Lebanon","🇲🇦 Morocco","🇩🇿 Algeria","🇹🇳 Tunisia","🇶🇦 Qatar","🇰🇼 Kuwait","🇮🇳 India","🇬🇧 UK","🇫🇷 France","🇩🇪 Germany","🇪🇸 Spain","🇲🇽 Mexico","🇨🇦 Canada","🇦🇺 Australia","🇯🇵 Japan","🇨🇳 China","🇰🇷 South Korea","🇮🇹 Italy","🇵🇹 Portugal","🇷🇺 Russia","🇹🇷 Turkey","🇮🇩 Indonesia","🇵🇰 Pakistan","🇦🇫 Afghanistan","🇦🇱 Albania","🇦🇩 Andorra","🇦🇴 Angola","🇦🇬 Antigua and Barbuda","🇦🇷 Argentina","🇦🇲 Armenia","🇦🇹 Austria","🇦🇿 Azerbaijan","🇧🇸 Bahamas","🇧🇭 Bahrain","🇧🇩 Bangladesh","🇧🇧 Barbados","🇧🇾 Belarus","🇧🇪 Belgium","🇧🇿 Belize","🇧🇯 Benin","🇧🇹 Bhutan","🇧🇴 Bolivia","🇧🇦 Bosnia and Herzegovina","🇧🇼 Botswana","🇧🇳 Brunei","🇧🇬 Bulgaria","🇧🇫 Burkina Faso","🇧🇮 Burundi","🇨🇻 Cabo Verde","🇰🇭 Cambodia","🇨🇲 Cameroon","🇨🇫 Central African Republic","🇹🇩 Chad","🇨🇱 Chile","🇨🇴 Colombia","🇰🇲 Comoros","🇨🇩 Congo (DR)","🇨🇬 Congo (Republic)","🇨🇷 Costa Rica","🇨🇮 Côte d'Ivoire","🇭🇷 Croatia","🇨🇺 Cuba","🇨🇾 Cyprus","🇨🇿 Czech Republic","🇩🇰 Denmark","🇩🇯 Djibouti","🇩🇲 Dominica","🇩🇴 Dominican Republic","🇪🇨 Ecuador","🇸🇻 El Salvador","🇬🇶 Equatorial Guinea","🇪🇷 Eritrea","🇪🇪 Estonia","🇸🇿 Eswatini","🇪🇹 Ethiopia","🇫🇯 Fiji","🇫🇮 Finland","🇬🇦 Gabon","🇬🇲 Gambia","🇬🇪 Georgia","🇬🇭 Ghana","🇬🇷 Greece","🇬🇩 Grenada","🇬🇹 Guatemala","🇬🇳 Guinea","🇬🇼 Guinea-Bissau","🇬🇾 Guyana","🇭🇹 Haiti","🇭🇳 Honduras","🇭🇺 Hungary","🇮🇸 Iceland","🇮🇷 Iran","🇮🇪 Ireland","🇮🇱 Israel","🇯🇲 Jamaica","🇰🇿 Kazakhstan","🇰🇪 Kenya","🇰🇮 Kiribati","🇽🇰 Kosovo","🇰🇬 Kyrgyzstan","🇱🇦 Laos","🇱🇻 Latvia","🇱🇸 Lesotho","🇱🇷 Liberia","🇱🇾 Libya","🇱🇮 Liechtenstein","🇱🇹 Lithuania","🇱🇺 Luxembourg","🇲🇬 Madagascar","🇲🇼 Malawi","🇲🇾 Malaysia","🇲🇻 Maldives","🇲🇱 Mali","🇲🇹 Malta","🇲🇭 Marshall Islands","🇲🇷 Mauritania","🇲🇺 Mauritius","🇫🇲 Micronesia","🇲🇩 Moldova","🇲🇨 Monaco","🇲🇳 Mongolia","🇲🇪 Montenegro","🇲🇿 Mozambique","🇲🇲 Myanmar","🇳🇦 Namibia","🇳🇷 Nauru","🇳🇵 Nepal","🇳🇱 Netherlands","🇳🇿 New Zealand","🇳🇮 Nicaragua","🇳🇪 Niger","🇳🇬 Nigeria","🇰🇵 North Korea","🇲🇰 North Macedonia","🇳🇴 Norway","🇴🇲 Oman","🇵🇼 Palau","🇵🇸 Palestine","🇵🇦 Panama","🇵🇬 Papua New Guinea","🇵🇾 Paraguay","🇵🇪 Peru","🇵🇭 Philippines","🇵🇱 Poland","🇷🇴 Romania","🇷🇼 Rwanda","🇰🇳 Saint Kitts and Nevis","🇱🇨 Saint Lucia","🇻🇨 Saint Vincent and the Grenadines","🇼🇸 Samoa","🇸🇲 San Marino","🇸🇹 São Tomé and Príncipe","🇸🇳 Senegal","🇷🇸 Serbia","🇸🇨 Seychelles","🇸🇱 Sierra Leone","🇸🇬 Singapore","🇸🇰 Slovakia","🇸🇮 Slovenia","🇸🇧 Solomon Islands","🇸🇴 Somalia","🇿🇦 South Africa","🇸🇸 South Sudan","🇱🇰 Sri Lanka","🇸🇩 Sudan","🇸🇷 Suriname","🇸🇪 Sweden","🇨🇭 Switzerland","🇸🇾 Syria","🇹🇼 Taiwan","🇹🇯 Tajikistan","🇹🇿 Tanzania","🇹🇭 Thailand","🇹🇱 Timor-Leste","🇹🇬 Togo","🇹🇴 Tonga","🇹🇹 Trinidad and Tobago","🇹🇻 Tuvalu","🇺🇬 Uganda","🇺🇦 Ukraine","🇺🇾 Uruguay","🇺🇿 Uzbekistan","🇻🇺 Vanuatu","🇻🇦 Vatican City","🇻🇪 Venezuela","🇻🇳 Vietnam","🇾🇪 Yemen","🇿🇲 Zambia","🇿🇼 Zimbabwe","🌍 Other"];
 
 const FEED=[{f:"🇺🇸",n:"J. Williams",t:"2m"},{f:"🇧🇷",n:"M. Silva",t:"5m"},{f:"🇸🇦",n:"Khaled A.",t:"8m"},{f:"🇯🇵",n:"Y. Tanaka",t:"11m"},{f:"🇩🇪",n:"F. Müller",t:"15m"},{f:"🇮🇳",n:"P. Sharma",t:"18m"},{f:"🇫🇷",n:"C. Dupont",t:"22m"},{f:"🇰🇷",n:"J. Kim",t:"25m"},{f:"🇲🇽",n:"L. García",t:"29m"},{f:"🇦🇪",n:"Fatima K.",t:"33m"},{f:"🇨🇳",n:"Wei Zhang",t:"37m"},{f:"🇬🇧",n:"S. Patel",t:"41m"}];
 
@@ -63,6 +63,7 @@ export default function App(){
   const[loading,setLoading]=useState(false);
   const[copied,setCopied]=useState(false);
   const[showForm,setShowForm]=useState(false);
+  const[feed,setFeed]=useState(FEED);
   const formRef=useRef();
   const cd=useCD();
   const ac=useAnim(count);
@@ -76,6 +77,20 @@ export default function App(){
     loadStats();
     const si=setInterval(loadStats,30000);
     return()=>clearInterval(si);
+  },[]);
+
+  useEffect(()=>{
+    const flagOf=(c)=>{if(!c)return"🌍";const p=c.split(" ");return p[0]||"🌍";};
+    const timeAgo=(ts)=>{const s=Math.floor((Date.now()-new Date(ts))/1000);if(s<60)return`${s}s`;if(s<3600)return`${Math.floor(s/60)}m`;if(s<86400)return`${Math.floor(s/3600)}h`;return`${Math.floor(s/86400)}d`;};
+    const loadFeed=()=>fetch("/api/recent-messages").then(r=>r.json()).then(d=>{
+      const real=(d.messages||[]).map(m=>({f:flagOf(m.country),n:m.name||"Anonymous",t:timeAgo(m.created_at),real:true}));
+      const needed=12-real.length;
+      const filled=needed>0?[...real,...FEED.slice(0,needed)]:real;
+      setFeed(filled);
+    }).catch(()=>{});
+    loadFeed();
+    const fi=setInterval(loadFeed,60000);
+    return()=>clearInterval(fi);
   },[]);
 
   const goForm=()=>{setShowForm(true);setTimeout(()=>formRef.current?.scrollIntoView({behavior:"smooth",block:"start"}),80);};
@@ -211,7 +226,7 @@ export default function App(){
   {/* LIVE FEED */}
   <section className={`live${rtl?" rtl":""}`}>
     <h3>🟢 {t.live_title}</h3>
-    <div className="lfg">{FEED.map((m,i)=><div key={i} className="lfc"><span style={{fontSize:"1.3rem"}}>{m.f}</span><div className="lfi"><div className="lfn">{m.n}</div><div className="lft">{m.t} ago</div></div><div className="lfd"/></div>)}</div>
+    <div className="lfg">{feed.map((m,i)=><div key={i} className="lfc"><span style={{fontSize:"1.3rem"}}>{m.f}</span><div className="lfi"><div className="lfn">{m.n}</div><div className="lft">{m.t} ago</div></div><div className="lfd"/></div>)}</div>
   </section>
 
   {/* TRANSPARENCY */}
