@@ -43,7 +43,7 @@ const IP_MAP={BR:"pt",SA:"ar",AE:"ar",EG:"ar",IQ:"ar",JO:"ar",KW:"ar",LB:"ar",LY
 const CURRENCY_MAP={
   en:{display:"$1"},
   pt:{display:"R$5"},
-  es:{display:"$1"},
+  es:{display:"$1 USD"},
   fr:{display:"€1"},
   de:{display:"€1"},
   it:{display:"€1"},
@@ -111,6 +111,7 @@ export default function App(){
   const[lang,setLang]=useState("en");
   const[count,setCount]=useState(0);
   const[raised,setRaised]=useState(0);
+  const[countries,setCountries]=useState(0);
   const[form,setForm]=useState({name:"",country:"",msg:"",vis:"public"});
   const[modal,setModal]=useState(false);
   const[agreed,setAgreed]=useState(false);
@@ -129,11 +130,12 @@ export default function App(){
   const rtl=t.dir==="rtl";
   const MAX=280;
 
+  const loadStats=(bust)=>fetch("/api/stats"+(bust?"?_="+Date.now():"")).then(r=>r.json()).then(d=>{if(typeof d.count==="number")setCount(d.count);if(typeof d.raised==="number")setRaised(d.raised);if(typeof d.countries==="number")setCountries(d.countries);}).catch(()=>{});
+
   useEffect(()=>{
     fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{const l=IP_MAP[d.country_code];if(l)setLang(l);}).catch(()=>{});
-    const loadStats=()=>fetch("/api/stats").then(r=>r.json()).then(d=>{if(typeof d.count==="number")setCount(d.count);if(typeof d.raised==="number")setRaised(d.raised);}).catch(()=>{});
     loadStats();
-    const si=setInterval(loadStats,30000);
+    const si=setInterval(()=>loadStats(),30000);
     return()=>clearInterval(si);
   },[]);
 
@@ -156,10 +158,24 @@ export default function App(){
     if(typeof window!=='undefined'){
       const p=new URLSearchParams(window.location.search);
       if(p.get('paid')==='1'){
-        const n=p.get('num');
-        setMsgNum(n||null);
+        const mid=p.get('mid');
         setSuccess(true);
         window.history.replaceState({},'','/');
+        // Poll for message_number (webhook fires async after redirect)
+        const poll=(attempts)=>{
+          if(!mid||attempts<=0)return;
+          fetch('/api/message-status?id='+mid)
+            .then(r=>r.json())
+            .then(d=>{
+              if(d.message_number){setMsgNum(String(d.message_number));}
+              else if(attempts>1){setTimeout(()=>poll(attempts-1),3000);}
+            }).catch(()=>{if(attempts>1)setTimeout(()=>poll(attempts-1),3000);});
+        };
+        setTimeout(()=>poll(5),2000);
+        // Also refresh counters
+        setTimeout(()=>loadStats(true),2000);
+        setTimeout(()=>loadStats(true),6000);
+        setTimeout(()=>loadStats(true),12000);
       }
     }
   },[]);
@@ -176,10 +192,26 @@ export default function App(){
   };
   const st=()=>{const m={en:"I just sealed my message for the world 🌍 Opens 2036 → OneMessage.world #OneMessage2036",ar:"تركتُ رسالتي للعالم 🌍 تُفتح 2036 ← OneMessage.world",pt:"Deixei minha mensagem para o mundo 🌍 Abre em 2036 → OneMessage.world",es:"Dejé mi mensaje para el mundo 🌍 Se abre en 2036 → OneMessage.world",fr:"J'ai laissé mon message pour le monde 🌍 S'ouvre en 2036 → OneMessage.world",de:"Ich habe meine Nachricht für die Welt hinterlassen 🌍 Öffnet 2036 → OneMessage.world",it:"Ho lasciato il mio messaggio per il mondo 🌍 Si apre nel 2036 → OneMessage.world",ja:"世界へのメッセージを残しました 🌍 2036年開封 → OneMessage.world",zh:"我留下了给世界的留言 🌍 2036年开封 → OneMessage.world",ko:"세상을 위한 메시지를 남겼습니다 🌍 2036년 개봉 → OneMessage.world",hi:"मैंने दुनिया के लिए अपना संदेश छोड़ा 🌍 2036 में खुलेगा → OneMessage.world",tr:"Dünya için mesajımı bıraktım 🌍 2036'da açılıyor → OneMessage.world",ru:"Я оставил послание миру 🌍 Открывается в 2036 → OneMessage.world",id:"Saya meninggalkan pesan untuk dunia 🌍 Dibuka 2036 → OneMessage.world"};return encodeURIComponent(m[lang]||m.en);};
   const showToast=(msg)=>{setToast(msg);setTimeout(()=>setToast(''),3000);};
+  const copyText=(text)=>{
+    const done=()=>{};
+    if(navigator.clipboard&&window.isSecureContext){
+      return navigator.clipboard.writeText(text).catch(()=>{
+        const t=document.createElement('textarea');t.value=text;t.style.cssText='position:fixed;opacity:0;top:-9999px';
+        document.body.appendChild(t);t.focus();t.select();
+        try{document.execCommand('copy');}catch(e){}
+        document.body.removeChild(t);
+      });
+    }
+    const t=document.createElement('textarea');t.value=text;t.style.cssText='position:fixed;opacity:0;top:-9999px';
+    document.body.appendChild(t);t.focus();t.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.body.removeChild(t);
+    return Promise.resolve();
+  };
   const cpLink=()=>{
-    navigator.clipboard?.writeText("https://onemessage.world")
-      .then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);showToast('Copied! ✓');})
-      .catch(()=>{});
+    copyText("https://onemessage.world").then(()=>{
+      setCopied(true);setTimeout(()=>setCopied(false),2000);showToast('Copied! ✓');
+    }).catch(()=>showToast('Copied! ✓'));
   };
   const downloadCard=()=>{
     const cv=document.createElement('canvas');cv.width=1080;cv.height=1080;
@@ -203,16 +235,43 @@ export default function App(){
   };
   const copyTikTok=()=>{
     const script="I just sealed my message for the world ✉️🌍\n\nOneMessage.world is a real digital time capsule — you write one message, pay $1 to seal it, and it opens for the entire world to read on January 1, 2036.\n\nMy message is locked until 2036. What will you say to the future? 🔮\n\n👉 OneMessage.world\n\n#TimeCapsule #2036 #OneMessage2036 #FutureMessage #DigitalHistory";
-    navigator.clipboard?.writeText(script).then(()=>{
+    copyText(script).then(()=>{
       showToast('Script copied! Open TikTok, press + and paste 🎬');
-      setTimeout(()=>{try{window.location.href='tiktok://';}catch(e){}},400);
-    }).catch(()=>{showToast('Script copied! Open TikTok, press + and paste 🎬');});
+      setTimeout(()=>{try{window.open('https://www.tiktok.com/upload','_blank');}catch(e){}},500);
+    }).catch(()=>showToast('Could not copy — try a different browser'));
   };
 
-  const shareInstagram=()=>{
-    downloadCard();
-    showToast('Card downloaded! Open Instagram and post it from your gallery 📸');
-    setTimeout(()=>{try{window.location.href='instagram://app';}catch(e){}},600);
+  const shareInstagram=async()=>{
+    // Generate canvas blob for Web Share API
+    const cv=document.createElement('canvas');cv.width=1080;cv.height=1080;
+    const x=cv.getContext('2d');
+    const g=x.createLinearGradient(0,0,1080,1080);
+    g.addColorStop(0,'#05070F');g.addColorStop(.5,'#090C18');g.addColorStop(1,'#0D1020');
+    x.fillStyle=g;x.fillRect(0,0,1080,1080);
+    x.strokeStyle='#D4AF37';x.lineWidth=10;x.strokeRect(24,24,1032,1032);
+    x.strokeStyle='rgba(212,175,55,.22)';x.lineWidth=2;x.strokeRect(48,48,984,984);
+    const dc2=(cx,cy,ang)=>{x.save();x.translate(cx,cy);x.rotate(ang);x.strokeStyle='#D4AF37';x.lineWidth=4;x.beginPath();x.moveTo(0,0);x.lineTo(72,0);x.moveTo(0,0);x.lineTo(0,72);x.stroke();x.restore();};
+    dc2(48,48,0);dc2(1032,48,Math.PI/2);dc2(1032,1032,Math.PI);dc2(48,1032,-Math.PI/2);
+    x.font='110px serif';x.textAlign='center';x.fillText('✉️',540,260);
+    x.fillStyle='#D4AF37';x.shadowColor='rgba(212,175,55,.55)';x.shadowBlur=50;
+    x.font='bold 200px Georgia,serif';x.fillText('#'+(msgNum||'?'),540,500);
+    x.shadowBlur=0;x.font='54px Georgia,serif';x.fillStyle='#EDE8D8';
+    x.fillText('OneMessage.world',540,610);
+    x.strokeStyle='rgba(212,175,55,.3)';x.lineWidth=1;x.beginPath();x.moveTo(160,650);x.lineTo(920,650);x.stroke();
+    x.font='30px sans-serif';x.fillStyle='rgba(237,232,216,.5)';x.fillText('Sealed · Opens January 1, 2036',540,712);
+    x.font='italic 26px Georgia,serif';x.fillStyle='rgba(212,175,55,.55)';x.fillText('#OneMessage2036',540,810);
+    // Try Web Share API (mobile)
+    try{
+      const blob=await new Promise(res=>cv.toBlob(res,'image/png'));
+      const file=new File([blob],'onemessage-card.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        await navigator.share({title:'OneMessage.world',text:'I sealed my message for 2036! '+st(),files:[file]});
+        return;
+      }
+    }catch(e){}
+    // Fallback: download + show toast
+    const a=document.createElement('a');a.download='onemessage-card.png';a.href=cv.toDataURL('image/png');a.click();
+    showToast('Card downloaded! Open Instagram and post it 📸');
   };
 
   return(<>
@@ -336,7 +395,7 @@ export default function App(){
     <p className="hs">{t.sub}</p>
     <div className="cr">
       <div className="ci"><div className="cn">{ac.toLocaleString()}</div><div className="cl">{t.counter_msgs}</div></div>
-      <div className="ci"><div className="cn">87</div><div className="cl">{t.counter_countries}</div></div>
+      <div className="ci"><div className="cn">{countries||0}</div><div className="cl">{t.counter_countries}</div></div>
       <div className="ci"><div className="cn">${raised.toLocaleString("en",{minimumFractionDigits:2,maximumFractionDigits:2})}</div><div className="cl">{t.counter_raised}</div></div>
     </div>
     <button className="cb" onClick={goForm}>{t.cta} — {curr.display}</button>
@@ -418,7 +477,7 @@ export default function App(){
     <p style={{color:"var(--mt)",fontSize:".88rem",lineHeight:1.72,marginBottom:6}}>{t.success_sub}</p>
     <p style={{fontSize:".66rem",color:"var(--mt)",letterSpacing:".16em",textTransform:"uppercase",opacity:.6,marginBottom:0}}>{t.success_share}</p>
     <div className="sbs">
-      <a className="sb sb-tw" href={`https://twitter.com/intent/tweet?text=${st()}`} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.731-8.836L1.254 2.25H8.08l4.259 5.629zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>{t.share_tw}</a>
+      <a className="sb sb-tw" href={`https://twitter.com/intent/tweet?text=${st()}&url=${encodeURIComponent("https://onemessage.world")}`} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.731-8.836L1.254 2.25H8.08l4.259 5.629zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>{t.share_tw}</a>
       <a className="sb sb-wa" href={`https://wa.me/?text=${st()}`} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>{t.share_wa}</a>
       <a className="sb sb-fb" href={`https://www.facebook.com/sharer/sharer.php?u=https://onemessage.world`} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>{t.share_fb}</a>
       <button className="sb sb-ig" onClick={shareInstagram}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</button>

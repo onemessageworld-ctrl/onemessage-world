@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 
     const uniqueCountries = new Set(countries?.map(r => r.country) || []).size
 
-    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate')
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
     res.status(200).json({
       count: count || 0,
       raised: parseFloat(raised),
