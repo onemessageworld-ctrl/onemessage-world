@@ -228,7 +228,7 @@ export default function App(){
     if(loading||!agreed)return;
     setLoading(true);setModal(false);setAgreed(false);
     try{
-      const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:form.name,country:form.country,message:form.msg,visibility:form.vis})});
+      const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:form.name,country:form.country,message:form.msg,visibility:form.vis,lang})});
       const d=await r.json();
       if(d.url){window.location.href=d.url;}
       else{alert(d.error||'Payment failed. Please try again.');setLoading(false);}
