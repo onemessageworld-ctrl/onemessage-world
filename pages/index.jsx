@@ -110,6 +110,27 @@ const COUNTRY_CURRENCY_MAP={
 };
 
 const SHARE_LABEL={en:"Share",pt:"Compartilhar",es:"Compartir",fr:"Partager",de:"Teilen",it:"Condividi",ja:"シェア",zh:"分享",ko:"공유",hi:"शेयर करें",ar:"مشاركة",tr:"Paylaş",ru:"Поделиться",id:"Bagikan",bn:"শেয়ার",ur:"شیئر کریں",vi:"Chia sẻ",th:"แชร์",nl:"Delen",pl:"Udostępnij",sv:"Dela",el:"Κοινοποίηση",he:"שתף",fil:"Ibahagi",ms:"Kongsi",uk:"Поділитися",ro:"Distribuie",cs:"Sdílet",hu:"Megosztás",fa:"اشتراک‌گذاری",sw:"Shiriki",am:"አጋራ",ta:"பகிர்"};
+const SHARE_NATIVE={
+  en:{title:"One Message. $1. Forever.",text:"Leave your message to the world — sealed until 2036."},
+  pt:{title:"Uma Mensagem. $1. Para Sempre.",text:"Deixe sua mensagem para o mundo — selada até 2036."},
+  es:{title:"Un Mensaje. $1. Para Siempre.",text:"Deja tu mensaje al mundo — sellado hasta 2036."},
+  ar:{title:"رسالة واحدة. دولار واحد. للأبد.",text:"اترك رسالتك للعالم — مختومة حتى 2036."},
+  fr:{title:"Un Message. 1$. Pour Toujours.",text:"Laissez votre message au monde — scellé jusqu'en 2036."},
+  de:{title:"Eine Nachricht. $1. Für Immer.",text:"Hinterlasse deine Nachricht für die Welt — versiegelt bis 2036."},
+  it:{title:"Un Messaggio. $1. Per Sempre.",text:"Lascia il tuo messaggio al mondo — sigillato fino al 2036."},
+  ja:{title:"ひとつのメッセージ。$1。永遠に。",text:"2036年まで封印されたメッセージを世界へ残そう。"},
+  zh:{title:"一条留言。$1。永远。",text:"留下你的信息给世界——封存至2036年。"},
+  ko:{title:"하나의 메시지. $1. 영원히.",text:"2036년까지 봉인된 당신의 메시지를 세상에 남기세요."},
+  hi:{title:"एक संदेश। $1। हमेशा के लिए।",text:"दुनिया के लिए अपना संदेश छोड़ें — 2036 तक सील।"},
+  tr:{title:"Bir Mesaj. $1. Sonsuza Dek.",text:"Dünyaya mesajını bırak — 2036'ya kadar mühürlü."},
+  ru:{title:"Одно послание. $1. Навсегда.",text:"Оставь своё послание миру — запечатано до 2036."},
+  id:{title:"Satu Pesan. $1. Selamanya.",text:"Tinggalkan pesanmu untuk dunia — disegel hingga 2036."},
+  vi:{title:"Một Tin Nhắn. $1. Mãi Mãi.",text:"Để lại tin nhắn cho thế giới — niêm phong đến 2036."},
+  nl:{title:"Één Bericht. $1. Voor Altijd.",text:"Laat je bericht achter voor de wereld — verzegeld tot 2036."},
+  pl:{title:"Jedna Wiadomość. $1. Na Zawsze.",text:"Zostaw swoją wiadomość dla świata — zapieczętowana do 2036."},
+  sv:{title:"Ett Meddelande. $1. För Alltid.",text:"Lämna ditt meddelande till världen — förseglat till 2036."},
+  uk:{title:"Одне послання. $1. Назавжди.",text:"Залиш своє послання світу — запечатане до 2036."},
+};
 
 const COUNTRIES=["🇺🇸 United States","🇧🇷 Brazil","🇸🇦 Saudi Arabia","🇦🇪 UAE","🇪🇬 Egypt","🇮🇶 Iraq","🇯🇴 Jordan","🇱🇧 Lebanon","🇲🇦 Morocco","🇩🇿 Algeria","🇹🇳 Tunisia","🇶🇦 Qatar","🇰🇼 Kuwait","🇮🇳 India","🇬🇧 UK","🇫🇷 France","🇩🇪 Germany","🇪🇸 Spain","🇲🇽 Mexico","🇨🇦 Canada","🇦🇺 Australia","🇯🇵 Japan","🇨🇳 China","🇰🇷 South Korea","🇮🇹 Italy","🇵🇹 Portugal","🇷🇺 Russia","🇹🇷 Turkey","🇮🇩 Indonesia","🇵🇰 Pakistan","🇦🇫 Afghanistan","🇦🇱 Albania","🇦🇩 Andorra","🇦🇴 Angola","🇦🇬 Antigua and Barbuda","🇦🇷 Argentina","🇦🇲 Armenia","🇦🇹 Austria","🇦🇿 Azerbaijan","🇧🇸 Bahamas","🇧🇭 Bahrain","🇧🇩 Bangladesh","🇧🇧 Barbados","🇧🇾 Belarus","🇧🇪 Belgium","🇧🇿 Belize","🇧🇯 Benin","🇧🇹 Bhutan","🇧🇴 Bolivia","🇧🇦 Bosnia and Herzegovina","🇧🇼 Botswana","🇧🇳 Brunei","🇧🇬 Bulgaria","🇧🇫 Burkina Faso","🇧🇮 Burundi","🇨🇻 Cabo Verde","🇰🇭 Cambodia","🇨🇲 Cameroon","🇨🇫 Central African Republic","🇹🇩 Chad","🇨🇱 Chile","🇨🇴 Colombia","🇰🇲 Comoros","🇨🇩 Congo (DR)","🇨🇬 Congo (Republic)","🇨🇷 Costa Rica","🇨🇮 Côte d'Ivoire","🇭🇷 Croatia","🇨🇺 Cuba","🇨🇾 Cyprus","🇨🇿 Czech Republic","🇩🇰 Denmark","🇩🇯 Djibouti","🇩🇲 Dominica","🇩🇴 Dominican Republic","🇪🇨 Ecuador","🇸🇻 El Salvador","🇬🇶 Equatorial Guinea","🇪🇷 Eritrea","🇪🇪 Estonia","🇸🇿 Eswatini","🇪🇹 Ethiopia","🇫🇯 Fiji","🇫🇮 Finland","🇬🇦 Gabon","🇬🇲 Gambia","🇬🇪 Georgia","🇬🇭 Ghana","🇬🇷 Greece","🇬🇩 Grenada","🇬🇹 Guatemala","🇬🇳 Guinea","🇬🇼 Guinea-Bissau","🇬🇾 Guyana","🇭🇹 Haiti","🇭🇳 Honduras","🇭🇺 Hungary","🇮🇸 Iceland","🇮🇷 Iran","🇮🇪 Ireland","🇮🇱 Israel","🇯🇲 Jamaica","🇰🇿 Kazakhstan","🇰🇪 Kenya","🇰🇮 Kiribati","🇽🇰 Kosovo","🇰🇬 Kyrgyzstan","🇱🇦 Laos","🇱🇻 Latvia","🇱🇸 Lesotho","🇱🇷 Liberia","🇱🇾 Libya","🇱🇮 Liechtenstein","🇱🇹 Lithuania","🇱🇺 Luxembourg","🇲🇬 Madagascar","🇲🇼 Malawi","🇲🇾 Malaysia","🇲🇻 Maldives","🇲🇱 Mali","🇲🇹 Malta","🇲🇭 Marshall Islands","🇲🇷 Mauritania","🇲🇺 Mauritius","🇫🇲 Micronesia","🇲🇩 Moldova","🇲🇨 Monaco","🇲🇳 Mongolia","🇲🇪 Montenegro","🇲🇿 Mozambique","🇲🇲 Myanmar","🇳🇦 Namibia","🇳🇷 Nauru","🇳🇵 Nepal","🇳🇱 Netherlands","🇳🇿 New Zealand","🇳🇮 Nicaragua","🇳🇪 Niger","🇳🇬 Nigeria","🇰🇵 North Korea","🇲🇰 North Macedonia","🇳🇴 Norway","🇴🇲 Oman","🇵🇼 Palau","🇵🇸 Palestine","🇵🇦 Panama","🇵🇬 Papua New Guinea","🇵🇾 Paraguay","🇵🇪 Peru","🇵🇭 Philippines","🇵🇱 Poland","🇷🇴 Romania","🇷🇼 Rwanda","🇰🇳 Saint Kitts and Nevis","🇱🇨 Saint Lucia","🇻🇨 Saint Vincent and the Grenadines","🇼🇸 Samoa","🇸🇲 San Marino","🇸🇹 São Tomé and Príncipe","🇸🇳 Senegal","🇷🇸 Serbia","🇸🇨 Seychelles","🇸🇱 Sierra Leone","🇸🇬 Singapore","🇸🇰 Slovakia","🇸🇮 Slovenia","🇸🇧 Solomon Islands","🇸🇴 Somalia","🇿🇦 South Africa","🇸🇸 South Sudan","🇱🇰 Sri Lanka","🇸🇩 Sudan","🇸🇷 Suriname","🇸🇪 Sweden","🇨🇭 Switzerland","🇸🇾 Syria","🇹🇼 Taiwan","🇹🇯 Tajikistan","🇹🇿 Tanzania","🇹🇭 Thailand","🇹🇱 Timor-Leste","🇹🇬 Togo","🇹🇴 Tonga","🇹🇹 Trinidad and Tobago","🇹🇻 Tuvalu","🇺🇬 Uganda","🇺🇦 Ukraine","🇺🇾 Uruguay","🇺🇿 Uzbekistan","🇻🇺 Vanuatu","🇻🇦 Vatican City","🇻🇪 Venezuela","🇻🇳 Vietnam","🇾🇪 Yemen","🇿🇲 Zambia","🇿🇼 Zimbabwe","🌍 Other"];
 
@@ -262,6 +283,13 @@ export default function App(){
     }).catch(()=>showToast('Could not copy — try a different browser'));
   };
 
+  const shareNative=async()=>{
+    const s=SHARE_NATIVE[lang]||SHARE_NATIVE.en;
+    if(typeof navigator!=='undefined'&&navigator.share){
+      try{await navigator.share({title:s.title,text:s.text,url:'https://onemessage.world'});return;}catch(e){}
+    }
+    copyText('https://onemessage.world').then(()=>showToast('Link copied!')).catch(()=>showToast('Link copied!'));
+  };
   const shareInstagram=async()=>{
     // Generate canvas blob for Web Share API
     const cv=document.createElement('canvas');cv.width=1080;cv.height=1080;
@@ -499,7 +527,7 @@ export default function App(){
     <p style={{color:"var(--mt)",fontSize:".88rem",lineHeight:1.72,marginBottom:6}}>{t.success_sub}</p>
     <p style={{fontSize:".66rem",color:"var(--mt)",letterSpacing:".16em",textTransform:"uppercase",opacity:.6,marginBottom:0}}>{t.success_share}</p>
     <div className="sbs">
-      <button className="sb sb-ig sb-share" onClick={shareInstagram}><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>{SHARE_LABEL[lang]||"Compartilhar"}</button>
+      <button className="sb sb-share" onClick={shareNative}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>{SHARE_LABEL[lang]||"Share"}</button>
     </div>
   </div>
   </div>}

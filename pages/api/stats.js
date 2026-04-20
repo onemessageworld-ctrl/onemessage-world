@@ -14,8 +14,8 @@ export default async function handler(req, res) {
 
     console.log('[stats] paid count:', count, 'error:', countErr?.message)
 
-    // Total raised = count * 0.67 (after Stripe fees)
-    const raised = ((count || 0) * 0.67).toFixed(2)
+    // Total raised = $1.00 gross per paid message
+    const raised = (count || 0).toFixed(2)
 
     // Count unique countries
     const { data: countries, error: countryErr } = await admin
