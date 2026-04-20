@@ -195,6 +195,8 @@ export default function App(){
     const si=setInterval(()=>loadStats(),30000);
     return()=>clearInterval(si);
   },[]);
+  // Persist detected language so success page can read it
+  useEffect(()=>{try{localStorage.setItem('om_lang',lang);}catch(e){}},[lang]);
 
   useEffect(()=>{
     const flagOf=(c)=>{if(!c)return"🌍";const p=c.split(" ");return p[0]||"🌍";};
