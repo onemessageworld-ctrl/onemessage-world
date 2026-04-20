@@ -51,6 +51,20 @@ export default function Admin() {
     finally { setActing(null); }
   };
 
+  const markPaid = async (id) => {
+    if (!confirm("Manually mark this message as PAID? Only do this if Stripe confirmed the payment.")) return;
+    setActing(id + "_pay");
+    try {
+      await fetch(`/api/admin/messages?id=${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paid: true }),
+      });
+      setMessages((prev) => prev.map((m) => m.id === id ? { ...m, paid: true } : m));
+    } catch { alert("Failed to update."); }
+    finally { setActing(null); }
+  };
+
   const toggleFlag = async (id, current) => {
     setActing(id + "_flag");
     try {
@@ -159,7 +173,13 @@ export default function Admin() {
                 </p>
               </div>
 
-              <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+              <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+                {!m.paid && (
+                  <button onClick={() => markPaid(m.id)} disabled={!!acting}
+                    style={{ ...s.actionBtn, background: "rgba(34,197,94,.1)", borderColor: "rgba(34,197,94,.4)", color: "#22c55e" }}>
+                    ✓ Mark as Paid
+                  </button>
+                )}
                 <button onClick={() => toggleFlag(m.id, m.flagged)} disabled={!!acting}
                   style={{ ...s.actionBtn, ...(m.flagged ? s.flagActive : s.flagBtn) }}>
                   {m.flagged ? "🚩 Flagged" : "Flag"}

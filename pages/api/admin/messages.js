@@ -21,6 +21,7 @@ export default async function handler(req, res) {
     const updates = {}
     if (typeof req.body?.reviewed === 'boolean') updates.reviewed = req.body.reviewed
     if (typeof req.body?.flagged === 'boolean') updates.flagged = req.body.flagged
+    if (typeof req.body?.paid === 'boolean') updates.paid = req.body.paid
     if (Object.keys(updates).length === 0) return res.status(400).json({ error: 'No valid fields to update' })
 
     try {
