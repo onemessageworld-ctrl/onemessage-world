@@ -15,19 +15,31 @@ const TIK = {
   pt: (num, country) => `📍 Hook:\n"Acabei de escrever algo que ninguém vai ler antes de 2036..."\n\n📍 História:\n"No OneMessage.world você paga $1 para selar uma mensagem pro mundo. Abre em 1 de janeiro de 2036. Sou a mensagem número ${num}${country ? ' do ' + country : ''}. Até eu vou esquecer o que escrevi."\n\n📍 CTA:\n"O que você diria pro mundo em 10 anos? Link na bio. É $1."\n\n#OneMessage2036`,
 }
 
-export default function Success({ msgData }) {
+export default function Success({ msgData, session_id }) {
   const [cardImg, setCardImg] = useState(null)
   const [copied, setCopied] = useState(false)
   const [refCopied, setRefCopied] = useState(false)
   const [tikCopied, setTikCopied] = useState(false)
   const [showTik, setShowTik] = useState(false)
+  const [verifiedMsg, setVerifiedMsg] = useState(msgData)
   const lang = typeof window !== 'undefined' ? (localStorage.getItem('om_lang') || 'en') : 'en'
-  const num = msgData?.message_number || '???'
-  const country = msgData?.country || ''
+  const num = verifiedMsg?.message_number || msgData?.message_number || '???'
+  const country = verifiedMsg?.country || msgData?.country || ''
   const refLink = `https://onemessage.world?ref=${Math.random().toString(36).substr(2,8).toUpperCase()}`
 
+  // Call verify-payment on mount — marks paid=true in Supabase via Stripe check
   useEffect(() => {
-    generateShareCard({ name: msgData?.name, country, messageNumber: num, lang }).then(setCardImg)
+    if (!session_id) return
+    const mid = msgData?.id
+    const url = '/api/verify-payment?session_id=' + encodeURIComponent(session_id) + (mid ? '&mid=' + mid : '')
+    fetch(url)
+      .then(r => r.json())
+      .then(d => { if (d.success && d.message) setVerifiedMsg(d.message) })
+      .catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    generateShareCard({ name: verifiedMsg?.name, country, messageNumber: num, lang }).then(setCardImg)
   }, [])
 
   const copy = (text, setCb) => {
@@ -151,8 +163,8 @@ export default function Success({ msgData }) {
 }
 
 export async function getServerSideProps({ query }) {
-  const { msg_id } = query
-  if (!msg_id) return { props: { msgData: null } }
+  const { msg_id, session_id } = query
+  if (!msg_id) return { props: { msgData: null, session_id: session_id || null } }
 
   try {
     const { createClient } = await import('@supabase/supabase-js')
@@ -161,8 +173,8 @@ export async function getServerSideProps({ query }) {
       process.env.SUPABASE_SERVICE_ROLE_KEY
     )
     const { data } = await admin.from('messages').select('*').eq('id', msg_id).single()
-    return { props: { msgData: data || null } }
+    return { props: { msgData: data || null, session_id: session_id || null } }
   } catch {
-    return { props: { msgData: null } }
+    return { props: { msgData: null, session_id: session_id || null } }
   }
 }

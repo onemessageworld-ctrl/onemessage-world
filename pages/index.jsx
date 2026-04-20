@@ -193,26 +193,10 @@ export default function App(){
   useEffect(()=>{
     if(typeof window!=='undefined'){
       const p=new URLSearchParams(window.location.search);
+      // Legacy: handle ?paid=1 redirect (now checkout goes to /success)
       if(p.get('paid')==='1'){
-        const mid=p.get('mid');
-        const session_id=p.get('session_id');
-        setSuccess(true);
         window.history.replaceState({},'','/');
-        // Verify payment directly with Stripe — reliable regardless of webhook
-        const verify=()=>{
-          if(!mid||!session_id)return;
-          fetch('/api/verify-payment?mid='+mid+'&session_id='+session_id)
-            .then(r=>r.json())
-            .then(d=>{
-              if(d.ok){
-                if(d.message_number)setMsgNum(String(d.message_number));
-                loadStats(true);
-                setTimeout(()=>loadStats(true),3000);
-                setTimeout(()=>loadStats(true),8000);
-              }
-            }).catch(()=>{});
-        };
-        setTimeout(verify,1000);
+        loadStats(true);
       }
     }
   },[]);

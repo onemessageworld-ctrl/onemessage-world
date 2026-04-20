@@ -27,10 +27,11 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
     res.status(200).json({
       count: count || 0,
+      messages: count || 0,
       raised: parseFloat(raised),
       countries: uniqueCountries || 0,
     })
   } catch (err) {
-    res.status(500).json({ count: 0, raised: 0, countries: 0 })
+    res.status(500).json({ count: 0, messages: 0, raised: 0, countries: 0 })
   }
 }

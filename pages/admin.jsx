@@ -10,7 +10,6 @@ export default function Admin() {
   const [loading, setLoading] = useState(false);
   const [acting, setActing] = useState(null);
   const [filter, setFilter] = useState("all");
-  const [expanded, setExpanded] = useState({});
 
   const login = (e) => {
     e.preventDefault();
@@ -154,16 +153,10 @@ export default function Admin() {
                 <p style={{
                   margin: 0, lineHeight: 1.65, fontSize: ".88rem",
                   color: "rgba(237,232,216,.9)", whiteSpace: "pre-wrap",
-                  ...(!expanded[m.id] ? { maxHeight: 80, overflow: "hidden" } : {}),
+                  wordBreak: "break-word",
                 }}>
                   {m.message}
                 </p>
-                {m.message && m.message.length > 200 && (
-                  <button onClick={() => setExpanded(e => ({ ...e, [m.id]: !e[m.id] }))}
-                    style={{ ...s.smBtn, marginTop: 8, fontSize: ".72rem", padding: "3px 10px" }}>
-                    {expanded[m.id] ? "▲ less" : "▼ more"}
-                  </button>
-                )}
               </div>
 
               <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
