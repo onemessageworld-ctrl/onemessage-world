@@ -10,16 +10,12 @@ export default function Admin() {
   const [loading, setLoading] = useState(false);
   const [acting, setActing] = useState(null);
   const [filter, setFilter] = useState("all");
-  const [countrySearch, setCountrySearch] = useState("");
+  const [expanded, setExpanded] = useState({});
 
   const login = (e) => {
     e.preventDefault();
-    if (pw === ADMIN_PASSWORD) {
-      setAuthed(true);
-      setPwError(false);
-    } else {
-      setPwError(true);
-    }
+    if (pw === ADMIN_PASSWORD) { setAuthed(true); setPwError(false); }
+    else setPwError(true);
   };
 
   const fetchMessages = async () => {
@@ -28,11 +24,8 @@ export default function Admin() {
       const res = await fetch("/api/admin/messages");
       const data = await res.json();
       setMessages(data.messages || []);
-    } catch {
-      setMessages([]);
-    } finally {
-      setLoading(false);
-    }
+    } catch { setMessages([]); }
+    finally { setLoading(false); }
   };
 
   const deleteMessage = async (id) => {
@@ -41,32 +34,25 @@ export default function Admin() {
     try {
       await fetch(`/api/admin/messages?id=${id}`, { method: "DELETE" });
       setMessages((prev) => prev.filter((m) => m.id !== id));
-    } catch {
-      alert("Failed to delete message.");
-    } finally {
-      setActing(null);
-    }
+    } catch { alert("Failed to delete."); }
+    finally { setActing(null); }
   };
 
-  const toggleReviewed = async (id, current) => {
-    setActing(id + "_rev");
+  const deleteAllUnpaid = async () => {
+    const unpaidCount = messages.filter((m) => !m.paid).length;
+    if (unpaidCount === 0) return alert("No unpaid messages to delete.");
+    if (!confirm(`Delete ALL ${unpaidCount} unpaid messages permanently?`)) return;
+    setActing("bulk_del");
     try {
-      await fetch(`/api/admin/messages?id=${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reviewed: !current }),
-      });
-      setMessages((prev) =>
-        prev.map((m) => (m.id === id ? { ...m, reviewed: !current } : m))
-      );
-    } catch {
-      alert("Failed to update.");
-    } finally {
-      setActing(null);
-    }
+      const res = await fetch("/api/admin/messages?unpaid_only=1", { method: "DELETE" });
+      const data = await res.json();
+      setMessages((prev) => prev.filter((m) => m.paid));
+      alert(`Deleted ${data.deleted || unpaidCount} unpaid messages.`);
+    } catch { alert("Failed to delete unpaid messages."); }
+    finally { setActing(null); }
   };
 
-  const toggleFlagged = async (id, current) => {
+  const toggleFlag = async (id, current) => {
     setActing(id + "_flag");
     try {
       await fetch(`/api/admin/messages?id=${id}`, {
@@ -74,181 +60,122 @@ export default function Admin() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ flagged: !current }),
       });
-      setMessages((prev) =>
-        prev.map((m) => (m.id === id ? { ...m, flagged: !current } : m))
-      );
-    } catch {
-      alert("Failed to update.");
-    } finally {
-      setActing(null);
-    }
+      setMessages((prev) => prev.map((m) => m.id === id ? { ...m, flagged: !current } : m));
+    } catch { alert("Failed to update."); }
+    finally { setActing(null); }
   };
 
-  useEffect(() => {
-    if (authed) fetchMessages();
-  }, [authed]);
-
-  // Unique countries for the dropdown
-  const countries = [...new Set(messages.map((m) => m.country).filter(Boolean))].sort();
+  useEffect(() => { if (authed) fetchMessages(); }, [authed]);
 
   const filtered = messages.filter((m) => {
     if (filter === "paid" && !m.paid) return false;
     if (filter === "unpaid" && m.paid) return false;
     if (filter === "flagged" && !m.flagged) return false;
-    if (filter === "unreviewed" && m.reviewed) return false;
-    if (countrySearch && m.country !== countrySearch) return false;
     return true;
   });
 
   if (!authed) {
     return (
-      <div style={styles.page}>
-        <div style={styles.loginBox}>
-          <h1 style={styles.title}>OneMessage Admin</h1>
+      <div style={s.page}>
+        <div style={s.loginBox}>
+          <h1 style={s.title}>OneMessage Admin</h1>
           <form onSubmit={login}>
-            <input
-              type="password"
-              value={pw}
-              onChange={(e) => setPw(e.target.value)}
-              placeholder="Admin password"
-              style={{ ...styles.input, borderColor: pwError ? "#ef4444" : "rgba(212,175,55,.3)" }}
-              autoFocus
-            />
-            {pwError && <p style={styles.error}>Incorrect password.</p>}
-            <button type="submit" style={styles.btn}>Login</button>
+            <input type="password" value={pw} onChange={(e) => setPw(e.target.value)}
+              placeholder="Admin password" autoFocus
+              style={{ ...s.input, borderColor: pwError ? "#ef4444" : "rgba(212,175,55,.3)" }} />
+            {pwError && <p style={{ color: "#ef4444", fontSize: ".8rem", margin: "4px 0 10px" }}>Incorrect password.</p>}
+            <button type="submit" style={s.btn}>Login</button>
           </form>
         </div>
       </div>
     );
   }
 
+  const paidCount = messages.filter((m) => m.paid).length;
+  const unpaidCount = messages.filter((m) => !m.paid).length;
+  const raised = (paidCount * 0.67).toFixed(2);
+
   return (
-    <div style={styles.page}>
-      <div style={styles.header}>
-        <h1 style={styles.title}>OneMessage Admin</h1>
-        <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-          <span style={styles.badge}>{messages.length} total</span>
-          <span style={{ ...styles.badge, background: "rgba(34,197,94,.15)", color: "#22c55e" }}>
-            {messages.filter((m) => m.paid).length} paid
-          </span>
-          <span style={{ ...styles.badge, background: "rgba(239,68,68,.12)", color: "#ef4444" }}>
-            {messages.filter((m) => !m.paid).length} unpaid
-          </span>
-          <span style={{ ...styles.badge, background: "rgba(251,191,36,.12)", color: "#fbbf24" }}>
-            {messages.filter((m) => m.flagged).length} flagged
-          </span>
-          <span style={{ ...styles.badge, background: "rgba(148,163,184,.1)", color: "#94a3b8" }}>
-            {messages.filter((m) => !m.reviewed).length} unreviewed
-          </span>
-          <button onClick={fetchMessages} style={styles.refreshBtn}>Refresh</button>
+    <div style={s.page}>
+      <div style={s.header}>
+        <h1 style={s.title}>OneMessage Admin</h1>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+          <span style={s.badge}>{messages.length} total</span>
+          <span style={{ ...s.badge, background: "rgba(34,197,94,.15)", color: "#22c55e" }}>{paidCount} paid</span>
+          <span style={{ ...s.badge, background: "rgba(239,68,68,.12)", color: "#ef4444" }}>{unpaidCount} unpaid</span>
+          <span style={{ ...s.badge, background: "rgba(212,175,55,.12)", color: "#D4AF37" }}>${raised} raised</span>
+          <button onClick={fetchMessages} style={s.smBtn} disabled={loading}>↻ Refresh</button>
         </div>
       </div>
 
-      {/* Filters row */}
-      <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap", alignItems: "center" }}>
-        <div style={styles.filters}>
-          {["all", "paid", "unpaid", "flagged", "unreviewed"].map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              style={{ ...styles.filterBtn, ...(filter === f ? styles.filterBtnActive : {}) }}
-            >
-              {f.charAt(0).toUpperCase() + f.slice(1)}
-            </button>
-          ))}
-        </div>
-        <select
-          value={countrySearch}
-          onChange={(e) => setCountrySearch(e.target.value)}
-          style={styles.countrySelect}
-        >
-          <option value="">All countries</option>
-          {countries.map((c) => (
-            <option key={c} value={c}>{c}</option>
-          ))}
-        </select>
-        {countrySearch && (
-          <button onClick={() => setCountrySearch("")} style={styles.clearBtn}>✕ Clear</button>
-        )}
-        <span style={{ color: "rgba(237,232,216,.4)", fontSize: ".78rem", marginLeft: "auto" }}>
-          {filtered.length} result{filtered.length !== 1 ? "s" : ""}
-        </span>
+      <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap", alignItems: "center" }}>
+        {["all", "paid", "unpaid", "flagged"].map((f) => (
+          <button key={f} onClick={() => setFilter(f)}
+            style={{ ...s.filterBtn, ...(filter === f ? s.filterActive : {}) }}>
+            {f.charAt(0).toUpperCase() + f.slice(1)}
+          </button>
+        ))}
+        <button onClick={deleteAllUnpaid} disabled={!!acting || unpaidCount === 0}
+          style={{ ...s.smBtn, borderColor: "rgba(239,68,68,.4)", color: "#ef4444", marginLeft: "auto" }}>
+          🗑 Delete all unpaid ({unpaidCount})
+        </button>
       </div>
 
       {loading ? (
-        <p style={{ color: "#D4AF37", textAlign: "center", padding: 40 }}>Loading messages...</p>
+        <p style={{ color: "#D4AF37", textAlign: "center", padding: 40 }}>Loading...</p>
       ) : filtered.length === 0 ? (
-        <p style={{ color: "rgba(237,232,216,.5)", textAlign: "center", padding: 40 }}>No messages found.</p>
+        <p style={{ color: "rgba(237,232,216,.4)", textAlign: "center", padding: 40 }}>No messages found.</p>
       ) : (
-        <div style={styles.table}>
-          <div style={styles.tableHeader}>
-            <span style={{ flex: "0 0 55px" }}>#</span>
-            <span style={{ flex: "0 0 130px" }}>Name</span>
-            <span style={{ flex: "0 0 130px" }}>Country</span>
-            <span style={{ flex: 1 }}>Message</span>
-            <span style={{ flex: "0 0 70px" }}>Vis.</span>
-            <span style={{ flex: "0 0 60px" }}>Paid</span>
-            <span style={{ flex: "0 0 140px" }}>Date</span>
-            <span style={{ flex: "0 0 200px" }}>Actions</span>
-          </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {filtered.map((m) => (
-            <div
-              key={m.id}
-              style={{
-                ...styles.row,
-                opacity: acting?.startsWith(m.id) ? 0.4 : 1,
-                background: m.flagged ? "rgba(251,191,36,.04)" : undefined,
-                borderLeft: m.flagged ? "3px solid rgba(251,191,36,.5)" : "3px solid transparent",
-              }}
-            >
-              <span style={{ flex: "0 0 55px", color: "#D4AF37", fontSize: ".78rem" }}>
-                #{m.message_number || "—"}
-              </span>
-              <span style={{ flex: "0 0 130px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {m.name || <span style={{ opacity: 0.4 }}>anonymous</span>}
-              </span>
-              <span style={{ flex: "0 0 130px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: ".8rem" }}>
-                {m.country || "—"}
-              </span>
-              <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {m.message}
-              </span>
-              <span style={{ flex: "0 0 70px", color: m.visibility === "public" ? "#22c55e" : "#94a3b8", fontSize: ".75rem" }}>
-                {m.visibility}
-              </span>
-              <span style={{ flex: "0 0 60px" }}>
-                <span style={{ background: m.paid ? "rgba(34,197,94,.15)" : "rgba(239,68,68,.12)", color: m.paid ? "#22c55e" : "#ef4444", padding: "2px 7px", borderRadius: 4, fontSize: ".7rem" }}>
-                  {m.paid ? "YES" : "NO"}
+            <div key={m.id} style={{
+              ...s.card,
+              borderLeft: m.paid ? "3px solid #22c55e" : "3px solid #ef4444",
+              opacity: acting === "bulk_del" || acting?.startsWith(m.id) ? 0.5 : 1,
+            }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", marginBottom: 10 }}>
+                <span style={{ color: "#D4AF37", fontWeight: 700, fontSize: "1rem", minWidth: 36 }}>
+                  #{m.message_number || "—"}
                 </span>
-              </span>
-              <span style={{ flex: "0 0 140px", fontSize: ".73rem", color: "rgba(237,232,216,.5)" }}>
-                {m.created_at ? new Date(m.created_at).toLocaleString() : "—"}
-              </span>
-              <span style={{ flex: "0 0 200px", display: "flex", gap: 5, flexWrap: "wrap" }}>
-                <button
-                  onClick={() => toggleReviewed(m.id, m.reviewed)}
-                  disabled={!!acting}
-                  style={{ ...styles.actionBtn, ...(m.reviewed ? styles.reviewedBtn : styles.unreviewedBtn) }}
-                  title={m.reviewed ? "Mark as unreviewed" : "Mark as reviewed"}
-                >
-                  {m.reviewed ? "✓ Reviewed" : "Review"}
-                </button>
-                <button
-                  onClick={() => toggleFlagged(m.id, m.flagged)}
-                  disabled={!!acting}
-                  style={{ ...styles.actionBtn, ...(m.flagged ? styles.flaggedActiveBtn : styles.flagBtn) }}
-                  title={m.flagged ? "Unflag" : "Flag as inappropriate"}
-                >
+                <span style={m.paid ? s.tagGreen : s.tagRed}>
+                  {m.paid ? "✓ PAID" : "✗ UNPAID"}
+                </span>
+                <span style={{ fontWeight: 600, fontSize: ".88rem" }}>
+                  {m.name || <em style={{ opacity: .5 }}>anonymous</em>}
+                </span>
+                <span style={{ color: "rgba(237,232,216,.6)", fontSize: ".82rem" }}>{m.country || "—"}</span>
+                <span style={s.tagGray}>{m.visibility || "public"}</span>
+                <span style={{ color: "rgba(237,232,216,.35)", fontSize: ".72rem", marginLeft: "auto" }}>
+                  {m.created_at ? new Date(m.created_at).toLocaleString() : "—"}
+                </span>
+              </div>
+
+              <div style={s.msgBox}>
+                <p style={{
+                  margin: 0, lineHeight: 1.65, fontSize: ".88rem",
+                  color: "rgba(237,232,216,.9)", whiteSpace: "pre-wrap",
+                  ...(!expanded[m.id] ? { maxHeight: 80, overflow: "hidden" } : {}),
+                }}>
+                  {m.message}
+                </p>
+                {m.message && m.message.length > 200 && (
+                  <button onClick={() => setExpanded(e => ({ ...e, [m.id]: !e[m.id] }))}
+                    style={{ ...s.smBtn, marginTop: 8, fontSize: ".72rem", padding: "3px 10px" }}>
+                    {expanded[m.id] ? "▲ less" : "▼ more"}
+                  </button>
+                )}
+              </div>
+
+              <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+                <button onClick={() => toggleFlag(m.id, m.flagged)} disabled={!!acting}
+                  style={{ ...s.actionBtn, ...(m.flagged ? s.flagActive : s.flagBtn) }}>
                   {m.flagged ? "🚩 Flagged" : "Flag"}
                 </button>
-                <button
-                  onClick={() => deleteMessage(m.id)}
-                  disabled={!!acting}
-                  style={{ ...styles.actionBtn, ...styles.deleteBtn }}
-                >
+                <button onClick={() => deleteMessage(m.id)} disabled={!!acting}
+                  style={{ ...s.actionBtn, ...s.deleteBtn }}>
                   Delete
                 </button>
-              </span>
+              </div>
             </div>
           ))}
         </div>
@@ -257,173 +184,24 @@ export default function Admin() {
   );
 }
 
-const styles = {
-  page: {
-    background: "#05070F",
-    minHeight: "100vh",
-    color: "#EDE8D8",
-    fontFamily: "'DM Sans', sans-serif",
-    padding: "32px 20px",
-  },
-  loginBox: {
-    maxWidth: 380,
-    margin: "100px auto 0",
-    background: "rgba(255,255,255,.034)",
-    border: "1px solid rgba(212,175,55,.17)",
-    borderRadius: 10,
-    padding: "40px 32px",
-  },
-  title: {
-    fontFamily: "Georgia, serif",
-    color: "#D4AF37",
-    fontSize: "1.5rem",
-    marginBottom: 24,
-    textAlign: "center",
-  },
-  input: {
-    width: "100%",
-    background: "rgba(255,255,255,.05)",
-    border: "1px solid",
-    borderRadius: 4,
-    color: "#EDE8D8",
-    padding: "10px 14px",
-    fontSize: ".95rem",
-    outline: "none",
-    display: "block",
-    marginBottom: 8,
-    boxSizing: "border-box",
-  },
-  error: { color: "#ef4444", fontSize: ".8rem", marginBottom: 12 },
-  btn: {
-    width: "100%",
-    background: "linear-gradient(135deg,#D4AF37,#9A7A0A)",
-    color: "#000",
-    border: "none",
-    borderRadius: 4,
-    padding: "11px",
-    fontSize: ".95rem",
-    fontWeight: 700,
-    cursor: "pointer",
-    marginTop: 8,
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-    flexWrap: "wrap",
-    gap: 12,
-  },
-  badge: {
-    background: "rgba(212,175,55,.12)",
-    color: "#D4AF37",
-    padding: "4px 12px",
-    borderRadius: 20,
-    fontSize: ".75rem",
-    fontWeight: 600,
-  },
-  refreshBtn: {
-    background: "rgba(212,175,55,.1)",
-    border: "1px solid rgba(212,175,55,.3)",
-    color: "#D4AF37",
-    borderRadius: 4,
-    padding: "5px 14px",
-    cursor: "pointer",
-    fontSize: ".8rem",
-  },
-  filters: { display: "flex", gap: 6, flexWrap: "wrap" },
-  filterBtn: {
-    background: "none",
-    border: "1px solid rgba(212,175,55,.2)",
-    color: "rgba(237,232,216,.5)",
-    borderRadius: 4,
-    padding: "5px 14px",
-    cursor: "pointer",
-    fontSize: ".78rem",
-  },
-  filterBtnActive: {
-    background: "rgba(212,175,55,.12)",
-    color: "#D4AF37",
-    borderColor: "rgba(212,175,55,.5)",
-  },
-  countrySelect: {
-    background: "rgba(255,255,255,.04)",
-    border: "1px solid rgba(212,175,55,.2)",
-    color: "#EDE8D8",
-    borderRadius: 4,
-    padding: "5px 10px",
-    fontSize: ".78rem",
-    cursor: "pointer",
-    outline: "none",
-  },
-  clearBtn: {
-    background: "none",
-    border: "1px solid rgba(239,68,68,.3)",
-    color: "#ef4444",
-    borderRadius: 4,
-    padding: "5px 10px",
-    cursor: "pointer",
-    fontSize: ".75rem",
-  },
-  table: {
-    background: "rgba(255,255,255,.025)",
-    border: "1px solid rgba(212,175,55,.15)",
-    borderRadius: 8,
-    overflow: "auto",
-  },
-  tableHeader: {
-    display: "flex",
-    gap: 10,
-    padding: "10px 16px",
-    background: "rgba(212,175,55,.07)",
-    fontSize: ".7rem",
-    color: "#D4AF37",
-    letterSpacing: ".06em",
-    textTransform: "uppercase",
-    fontWeight: 600,
-    minWidth: 900,
-  },
-  row: {
-    display: "flex",
-    gap: 10,
-    padding: "11px 16px",
-    borderTop: "1px solid rgba(212,175,55,.08)",
-    fontSize: ".8rem",
-    alignItems: "center",
-    minWidth: 900,
-    transition: "background .15s",
-  },
-  actionBtn: {
-    border: "1px solid",
-    borderRadius: 4,
-    padding: "3px 9px",
-    cursor: "pointer",
-    fontSize: ".72rem",
-    fontWeight: 500,
-  },
-  unreviewedBtn: {
-    background: "rgba(148,163,184,.07)",
-    borderColor: "rgba(148,163,184,.3)",
-    color: "#94a3b8",
-  },
-  reviewedBtn: {
-    background: "rgba(34,197,94,.08)",
-    borderColor: "rgba(34,197,94,.3)",
-    color: "#22c55e",
-  },
-  flagBtn: {
-    background: "rgba(251,191,36,.07)",
-    borderColor: "rgba(251,191,36,.25)",
-    color: "#fbbf24",
-  },
-  flaggedActiveBtn: {
-    background: "rgba(251,191,36,.15)",
-    borderColor: "rgba(251,191,36,.5)",
-    color: "#fbbf24",
-  },
-  deleteBtn: {
-    background: "rgba(239,68,68,.08)",
-    borderColor: "rgba(239,68,68,.3)",
-    color: "#ef4444",
-  },
+const s = {
+  page: { background: "#05070F", minHeight: "100vh", color: "#EDE8D8", fontFamily: "'DM Sans',sans-serif", padding: "32px 20px", maxWidth: 900, margin: "0 auto" },
+  loginBox: { maxWidth: 360, margin: "100px auto 0", background: "rgba(255,255,255,.034)", border: "1px solid rgba(212,175,55,.17)", borderRadius: 10, padding: "40px 32px" },
+  title: { fontFamily: "Georgia,serif", color: "#D4AF37", fontSize: "1.5rem", marginBottom: 20 },
+  input: { width: "100%", background: "rgba(255,255,255,.05)", border: "1px solid", borderRadius: 4, color: "#EDE8D8", padding: "10px 14px", fontSize: ".95rem", outline: "none", display: "block", marginBottom: 8, boxSizing: "border-box" },
+  btn: { width: "100%", background: "linear-gradient(135deg,#D4AF37,#9A7A0A)", color: "#000", border: "none", borderRadius: 4, padding: "11px", fontSize: ".95rem", fontWeight: 700, cursor: "pointer" },
+  header: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24, flexWrap: "wrap", gap: 12 },
+  badge: { background: "rgba(212,175,55,.1)", color: "#D4AF37", padding: "4px 12px", borderRadius: 20, fontSize: ".75rem", fontWeight: 600 },
+  smBtn: { background: "rgba(255,255,255,.04)", border: "1px solid rgba(212,175,55,.25)", color: "#D4AF37", borderRadius: 4, padding: "5px 12px", cursor: "pointer", fontSize: ".78rem" },
+  filterBtn: { background: "none", border: "1px solid rgba(212,175,55,.2)", color: "rgba(237,232,216,.5)", borderRadius: 4, padding: "5px 14px", cursor: "pointer", fontSize: ".78rem" },
+  filterActive: { background: "rgba(212,175,55,.12)", color: "#D4AF37", borderColor: "rgba(212,175,55,.5)" },
+  card: { background: "rgba(255,255,255,.025)", border: "1px solid rgba(212,175,55,.1)", borderRadius: 8, padding: "16px 18px" },
+  msgBox: { background: "rgba(0,0,0,.25)", border: "1px solid rgba(212,175,55,.08)", borderRadius: 5, padding: "12px 14px" },
+  tagGreen: { background: "rgba(34,197,94,.12)", color: "#22c55e", padding: "2px 8px", borderRadius: 4, fontSize: ".72rem", fontWeight: 700 },
+  tagRed: { background: "rgba(239,68,68,.12)", color: "#ef4444", padding: "2px 8px", borderRadius: 4, fontSize: ".72rem", fontWeight: 700 },
+  tagGray: { background: "rgba(148,163,184,.1)", color: "#94a3b8", padding: "2px 8px", borderRadius: 4, fontSize: ".72rem" },
+  actionBtn: { border: "1px solid", borderRadius: 4, padding: "4px 12px", cursor: "pointer", fontSize: ".75rem", fontWeight: 500 },
+  flagBtn: { background: "rgba(251,191,36,.07)", borderColor: "rgba(251,191,36,.3)", color: "#fbbf24" },
+  flagActive: { background: "rgba(251,191,36,.15)", borderColor: "rgba(251,191,36,.5)", color: "#fbbf24" },
+  deleteBtn: { background: "rgba(239,68,68,.07)", borderColor: "rgba(239,68,68,.3)", color: "#ef4444" },
 };

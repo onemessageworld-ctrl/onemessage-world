@@ -36,7 +36,24 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Failed to update message' })
     }
   } else if (req.method === 'DELETE') {
-    const { id } = req.query
+    const { id, unpaid_only } = req.query
+
+    // Delete all unpaid messages
+    if (unpaid_only === '1') {
+      try {
+        const admin = supabaseAdmin()
+        const { error, count } = await admin
+          .from('messages')
+          .delete({ count: 'exact' })
+          .eq('paid', false)
+
+        if (error) throw error
+        return res.status(200).json({ success: true, deleted: count })
+      } catch (err) {
+        return res.status(500).json({ error: 'Failed to delete unpaid messages' })
+      }
+    }
+
     if (!id) return res.status(400).json({ error: 'Missing id' })
 
     try {

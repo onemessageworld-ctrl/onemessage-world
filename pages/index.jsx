@@ -195,34 +195,24 @@ export default function App(){
       const p=new URLSearchParams(window.location.search);
       if(p.get('paid')==='1'){
         const mid=p.get('mid');
-        const sid=p.get('sid');
+        const session_id=p.get('session_id');
         setSuccess(true);
         window.history.replaceState({},'','/');
-        // Verify payment with Stripe directly (more reliable than waiting for webhook)
+        // Verify payment directly with Stripe — reliable regardless of webhook
         const verify=()=>{
-          if(!mid||!sid)return;
-          fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mid,sid})})
+          if(!mid||!session_id)return;
+          fetch('/api/verify-payment?mid='+mid+'&session_id='+session_id)
             .then(r=>r.json())
             .then(d=>{
-              if(d.message_number)setMsgNum(String(d.message_number));
-              loadStats(true);
-              setTimeout(()=>loadStats(true),3000);
-              setTimeout(()=>loadStats(true),8000);
-            }).catch(()=>{
-              // Fallback: poll message-status
-              const poll=(attempts)=>{
-                if(!mid||attempts<=0)return;
-                fetch('/api/message-status?id='+mid)
-                  .then(r=>r.json())
-                  .then(d=>{
-                    if(d.paid&&d.message_number){setMsgNum(String(d.message_number));loadStats(true);}
-                    else if(attempts>1){setTimeout(()=>poll(attempts-1),3000);}
-                  }).catch(()=>{if(attempts>1)setTimeout(()=>poll(attempts-1),3000);});
-              };
-              setTimeout(()=>poll(5),2000);
-            });
+              if(d.ok){
+                if(d.message_number)setMsgNum(String(d.message_number));
+                loadStats(true);
+                setTimeout(()=>loadStats(true),3000);
+                setTimeout(()=>loadStats(true),8000);
+              }
+            }).catch(()=>{});
         };
-        setTimeout(verify,1500);
+        setTimeout(verify,1000);
       }
     }
   },[]);
